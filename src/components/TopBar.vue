@@ -5,11 +5,15 @@
       class="search-bar"
       label="Search"
       variant="underlined"
+      prepend-inner-icon="mdi-magnify"
       clearable
-      prepend-inner-icon="mdi-delete"
-      density="compact"
     ></v-text-field>
-    <div class="buttons">buttons</div>
+    <div class="buttons">
+      <v-icon>mdi-plus-box</v-icon>
+      <v-icon>mdi-cog</v-icon>
+      <v-icon>mdi-bell-outline</v-icon>
+      <v-icon>mdi-account</v-icon>
+    </div>
   </div>
 </template>
 
@@ -26,5 +30,12 @@
 .buttons {
   margin-left: 3em;
   margin-right: 3em;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  place-content: center;
+  justify-content: space-around;
 }
 </style>
