@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import TopBar from './components/TopBar.vue'
 import Register from './components/Register.vue'
+import Login from './components/Login.vue'
 </script>
 
 <template>
@@ -11,7 +12,7 @@ import Register from './components/Register.vue'
     </div>
     <div class="bottom">
       <div class="left">left</div>
-      <div class="main"><Register /></div>
+      <div class="main"><Login /></div>
       <div class="right">right</div>
     </div>
   </div>
