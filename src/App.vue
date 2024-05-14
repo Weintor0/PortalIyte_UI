@@ -6,7 +6,7 @@ import TopBar from './components/TopBar.vue'
 <template>
   <div class="body">
     <div class="top">
-      <TopBar />
+      <TopBar isLogin="true" />
     </div>
     <div class="bottom">
       <div class="left">left</div>

@@ -2,13 +2,14 @@
   <div class="top-bar">
     <div class="logo">logo</div>
     <v-text-field
+      v-if="isLogin"
       class="search-bar"
       label="Search"
       variant="underlined"
       prepend-inner-icon="mdi-magnify"
       clearable
     ></v-text-field>
-    <div class="buttons">
+    <div v-if="isLogin" class="buttons">
       <v-icon>mdi-plus-box</v-icon>
       <v-icon>mdi-cog</v-icon>
       <v-icon>mdi-bell-outline</v-icon>
@@ -16,6 +17,17 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+export default {
+  props: {
+    isLogin: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>
 
 <style scoped>
 .top-bar {
