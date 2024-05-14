@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import TopBar from './components/TopBar.vue'
+import Register from './components/Register.vue'
 </script>
 
 <template>
@@ -10,7 +11,7 @@ import TopBar from './components/TopBar.vue'
     </div>
     <div class="bottom">
       <div class="left">left</div>
-      <div class="main">main</div>
+      <div class="main"><Register /></div>
       <div class="right">right</div>
     </div>
   </div>
@@ -36,5 +37,11 @@ import TopBar from './components/TopBar.vue'
 }
 .right {
   background-color: blueviolet;
+}
+
+.right,
+.left,
+.main {
+  padding: 1em;
 }
 </style>
