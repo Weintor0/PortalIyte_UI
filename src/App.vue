@@ -1,45 +1,40 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import TopBar from './components/TopBar.vue'
 </script>
 
 <template>
-  <div class="top">TOP</div>
-  <div class="bottom">
-    <div class="left">left</div>
-    <div class="main">main</div>
-    <div class="right">right</div>
+  <div class="body">
+    <div class="top">
+      <TopBar isLogin="true" />
+    </div>
+    <div class="bottom">
+      <div class="left">left</div>
+      <div class="main">main</div>
+      <div class="right">right</div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.top {
-  min-height: 10vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: yellow;
+.body {
+  display: grid;
+  grid-template-rows: 1fr 8fr;
+  height: 100%;
 }
 
 .bottom {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 7fr 2fr;
 }
 
-.left,
-.right,
-.main {
-  min-height: 75vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.top {
+  background-color: aqua;
 }
-
-.left,
+.left {
+  background-color: azure;
+}
 .right {
-  min-width: 15%;
-}
-
-.main {
-  min-width: 70%;
-  background-color: orange;
+  background-color: blueviolet;
 }
 </style>
