@@ -1,22 +1,43 @@
+<template>
+  <div class="body">
+    <div class="top">
+      <TopBar :isLogin="loginState == 'succesfully-login'" />
+    </div>
+
+    <div class="bottom">
+      <div class="left-container"></div>
+
+      <div class="main-container">
+        <div class="login-component" v-if="loginState == 'login-page'">
+          <Login
+            @registerPage="loginState = 'register-page'"
+            @succesfullyLogin="(loginState = 'succesfully-login'), console.log(loginState)"
+          />
+        </div>
+
+        <div class="register-component" v-if="loginState == 'register-page'">
+          <Register @loginPage="loginState = 'login-page'" />
+        </div>
+
+        <div class="main-component" v-if="loginState == 'succesfully-login'">
+          aaaaaaaaaaaaaaaaaaaaaaa
+        </div>
+      </div>
+
+      <div class="right-container"></div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import TopBar from './components/TopBar.vue'
 import Register from './components/Register.vue'
 import Login from './components/Login.vue'
-</script>
+import { ref } from 'vue'
 
-<template>
-  <div class="body">
-    <div class="top">
-      <TopBar isLogin="true" />
-    </div>
-    <div class="bottom">
-      <div class="left">left</div>
-      <div class="main"><Login /></div>
-      <div class="right">right</div>
-    </div>
-  </div>
-</template>
+const loginState = ref('login-page')
+</script>
 
 <style scoped>
 .body {
@@ -30,19 +51,9 @@ import Login from './components/Login.vue'
   grid-template-columns: 2fr 7fr 2fr;
 }
 
-.top {
-  background-color: aqua;
-}
-.left {
-  background-color: azure;
-}
-.right {
-  background-color: blueviolet;
-}
-
-.right,
-.left,
-.main {
+.right-container,
+.left-container,
+.main-container {
   padding: 1em;
 }
 </style>

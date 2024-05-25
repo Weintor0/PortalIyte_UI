@@ -1,19 +1,21 @@
 <template>
   <div class="register-container">
-    <div class="logo">logo</div>
+    <div class="logo">
+      <v-img src="/src/assets/iyte-logo-eng.png"></v-img>
+    </div>
     <div class="text-fields">
-      <v-card class="register-form" max-width="25em" title="Login">
+      <v-card class="register-form" max-width="25em" title="Login" variant="outline">
         <v-container>
           <v-text-field
             v-model="email"
-            color="primary"
+            color="#9A1220"
             label="IZTECH Mail Address"
             variant="underlined"
           ></v-text-field>
 
           <v-text-field
             v-model="password"
-            color="primary"
+            color="#9A1220"
             label="Password"
             placeholder="Enter your password"
             type="password"
@@ -22,12 +24,12 @@
         </v-container>
 
         <v-card-actions>
-          <v-btn color="success" class="button">
+          <v-btn class="button" @click="$emit('succesfully-login')">
             Login <v-icon icon="mdi-chevron-right" end></v-icon>
           </v-btn>
         </v-card-actions>
         <v-card-actions>
-          <v-btn color="success" class="button">
+          <v-btn class="button" @click="$emit('register-page')">
             Register <v-icon icon="mdi-chevron-right" end></v-icon>
           </v-btn>
         </v-card-actions>
@@ -49,7 +51,6 @@ export default {
 .register-container {
   max-width: 30em;
   margin: auto;
-  background-color: darkblue;
 }
 
 .logo {
@@ -59,5 +60,9 @@ export default {
 .register-form,
 .button {
   margin: auto;
+}
+
+.button {
+  color: rgb(154, 18, 32);
 }
 </style>
