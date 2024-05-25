@@ -1,27 +1,18 @@
 <template>
   <div class="body">
     <div class="top">
-      <TopBar :isLogin="loginState == 'succesfully-login'" />
+      <TopBar :isLogin="router.currentRoute.value.name == 'PostContainer'" />
     </div>
 
     <div class="bottom">
       <div class="left-container"></div>
 
       <div class="main-container">
-        <div class="login-component" v-if="loginState == 'login-page'">
-          <Login
-            @registerPage="loginState = 'register-page'"
-            @succesfullyLogin="(loginState = 'succesfully-login'), console.log(loginState)"
-          />
-        </div>
-
-        <div class="register-component" v-if="loginState == 'register-page'">
-          <Register @loginPage="loginState = 'login-page'" />
-        </div>
-
-        <div class="main-component" v-if="loginState == 'succesfully-login'">
-          aaaaaaaaaaaaaaaaaaaaaaa
-        </div>
+        <RouterView
+          @registerPage="goRegisterPage()"
+          @succesfullyLogin="goSuccessfullyLoginPage()"
+          @loginPage="goLoginPage()"
+        ></RouterView>
       </div>
 
       <div class="right-container"></div>
@@ -29,14 +20,23 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+<script setup>
+import { RouterView, useRouter } from 'vue-router'
 import TopBar from './components/TopBar.vue'
-import Register from './components/Register.vue'
-import Login from './components/Login.vue'
-import { ref } from 'vue'
 
-const loginState = ref('login-page')
+const router = useRouter()
+
+function goSuccessfullyLoginPage() {
+  router.push('/postcontainer')
+}
+
+function goLoginPage() {
+  router.push('/')
+}
+
+function goRegisterPage() {
+  router.push('/register')
+}
 </script>
 
 <style scoped>

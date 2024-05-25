@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import { RouterLink } from 'vue-router'
+
 export default {
   data: () => ({
     email: null,
