@@ -1,6 +1,8 @@
 <template>
   <div class="top-bar">
-    <div class="logo">logo</div>
+    <div class="logo" style="display: flex; max-width: 15em; min-width: 5em">
+      <v-img src="/src/assets/portaliyte-high-resolution-logo-transparent.png"></v-img>
+    </div>
     <v-text-field
       v-if="isLogin"
       class="search-bar"
@@ -8,12 +10,13 @@
       variant="underlined"
       prepend-inner-icon="mdi-magnify"
       clearable
+      hide-details="auto"
     ></v-text-field>
     <div v-if="isLogin" class="buttons">
-      <v-icon>mdi-plus-box</v-icon>
-      <v-icon>mdi-cog</v-icon>
-      <v-icon>mdi-bell-outline</v-icon>
-      <v-icon>mdi-account</v-icon>
+      <v-icon class="icon">mdi-plus-box</v-icon>
+      <v-icon class="icon">mdi-cog</v-icon>
+      <v-icon class="icon">mdi-bell-outline</v-icon>
+      <v-icon class="icon">mdi-account</v-icon>
     </div>
   </div>
 </template>
@@ -32,7 +35,7 @@ export default {
 <style scoped>
 .top-bar {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   height: 100%;
   padding: 0.5rem 1.5rem;
 }
@@ -45,9 +48,12 @@ export default {
 }
 
 .buttons {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  place-content: center;
-  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.icon {
+  margin-left: 1em;
 }
 </style>

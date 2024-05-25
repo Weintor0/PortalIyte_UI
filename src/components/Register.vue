@@ -1,26 +1,28 @@
 <template>
   <div class="register-container">
-    <div class="logo">logo</div>
+    <div class="logo">
+      <v-img src="/src/assets/iyte-logo-eng.png"></v-img>
+    </div>
     <div class="text-fields">
-      <v-card class="register-form" max-width="25em" title="User Registration">
+      <v-card class="register-form" max-width="25em" title="User Registration" variant="flat">
         <v-container>
           <v-text-field
             v-model="Username"
-            color="primary"
+            color="#9A1220"
             label="Username"
             variant="underlined"
           ></v-text-field>
 
           <v-text-field
             v-model="email"
-            color="primary"
+            color="#9A1220"
             label="IZTECH Mail Address"
             variant="underlined"
           ></v-text-field>
 
           <v-text-field
             v-model="password1"
-            color="primary"
+            color="#9A1220"
             label="Password"
             placeholder="Enter your password"
             type="password"
@@ -29,7 +31,7 @@
 
           <v-text-field
             v-model="password2"
-            color="primary"
+            color="#9A1220"
             label="Password Again"
             placeholder="Enter your password again"
             type="password"
@@ -38,17 +40,21 @@
 
           <v-checkbox
             v-model="terms"
-            color="secondary"
+            color="#9A1220"
             label="I agree to site terms and conditions"
           ></v-checkbox>
         </v-container>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn color="success">
+          <v-btn @click="$emit('login-page')" class="button">
             Complete Registration
+            <v-icon icon="mdi-chevron-right" end></v-icon>
+          </v-btn>
+        </v-card-actions>
 
+        <v-card-actions>
+          <v-btn @click="$emit('login-page')" class="button">
+            Login
             <v-icon icon="mdi-chevron-right" end></v-icon>
           </v-btn>
         </v-card-actions>
@@ -73,14 +79,18 @@ export default {
 .register-container {
   max-width: 30em;
   margin: auto;
-  background-color: darkblue;
 }
 
 .logo {
   text-align: center;
 }
 
-.register-form {
+.register-form,
+.button {
   margin: auto;
+}
+
+.button {
+  color: rgb(154, 18, 32);
 }
 </style>
