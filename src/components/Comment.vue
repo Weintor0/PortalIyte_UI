@@ -85,4 +85,8 @@ const submitReply = () => {
 :deep(.v-icon) {
   opacity: 1 !important;
 }
+
+.v-list-item {
+  padding-right: 0;
+}
 </style>
