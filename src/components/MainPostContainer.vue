@@ -10,6 +10,7 @@
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
+            @postDetails="$emit('post-details')"
             :header="post.header"
             :text="post.text"
             :postTopic="post.postTopic"

@@ -3,6 +3,7 @@ import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import PostContainer from '../components/MainPostContainer.vue'
 import Search from '../components/SearchPostContainer.vue'
+import PostDetails from '../components/PostDetails.vue'
 
 const routes = [
   {
@@ -25,9 +26,15 @@ const routes = [
   },
   {
     path: '/search/:query',
-    name: 'search',
+    name: 'Search',
     component: Search,
     props: true,
+    meta: { showTopBar: true }
+  },
+  {
+    path: '/postdetails',
+    name: 'PostDetails',
+    component: PostDetails,
     meta: { showTopBar: true }
   }
 ]
