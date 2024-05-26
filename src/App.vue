@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="top">
-      <TopBar :isLogin="router.currentRoute.value.name == 'PostContainer'" />
+      <TopBar :showSearchAndIcons="router.currentRoute.value.meta.showTopBar" />
     </div>
 
     <div class="bottom">
@@ -28,6 +28,7 @@ const router = useRouter()
 
 function goSuccessfullyLoginPage() {
   router.push('/postcontainer')
+  console.log(router.currentRoute.value.meta)
 }
 
 function goLoginPage() {
