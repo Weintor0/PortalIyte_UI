@@ -2,6 +2,7 @@
   <div class="top-bar">
     <div class="logo" style="display: flex; max-width: 15em; min-width: 5em">
       <v-img
+        style="cursor: pointer"
         @click="$router.push('/postcontainer')"
         src="/src/assets/portaliyte-high-resolution-logo-transparent.png"
       ></v-img>
