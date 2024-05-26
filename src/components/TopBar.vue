@@ -4,15 +4,17 @@
       <v-img src="/src/assets/portaliyte-high-resolution-logo-transparent.png"></v-img>
     </div>
     <v-text-field
-      v-if="isLogin"
+      v-if="showSearchAndIcons"
       class="search-bar"
       label="Search"
       variant="underlined"
       prepend-inner-icon="mdi-magnify"
       clearable
       hide-details="auto"
+      v-model="searchText"
+      @keyup.enter="handleEnter"
     ></v-text-field>
-    <div v-if="isLogin" class="buttons">
+    <div v-if="showSearchAndIcons" class="buttons">
       <v-icon class="icon">mdi-plus-box</v-icon>
       <v-icon class="icon">mdi-cog</v-icon>
       <v-icon class="icon">mdi-bell-outline</v-icon>
@@ -23,10 +25,22 @@
 
 <script lang="ts">
 export default {
+  data() {
+    return {
+      searchText: ''
+    }
+  },
   props: {
-    isLogin: {
+    showSearchAndIcons: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    handleEnter() {
+      const searchParam = this.searchText
+      this.searchText = ''
+      this.$router.push({ name: 'search', params: { query: searchParam } })
     }
   }
 }
