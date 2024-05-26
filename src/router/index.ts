@@ -4,6 +4,7 @@ import Register from '../components/Register.vue'
 import PostContainer from '../components/MainPostContainer.vue'
 import Search from '../components/SearchPostContainer.vue'
 import PostDetails from '../components/PostDetails.vue'
+import ProfilePage from '../components/ProfilePage.vue'
 
 const routes = [
   {
@@ -35,6 +36,12 @@ const routes = [
     path: '/postdetails',
     name: 'PostDetails',
     component: PostDetails,
+    meta: { showTopBar: true }
+  },
+  {
+    path: '/profilepage',
+    name: 'ProfilePage',
+    component: ProfilePage,
     meta: { showTopBar: true }
   }
 ]

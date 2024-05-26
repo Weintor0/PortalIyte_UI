@@ -2,6 +2,7 @@
   <div class="top-bar">
     <div class="logo" style="display: flex; max-width: 15em; min-width: 5em">
       <v-img
+        style="cursor: pointer"
         @click="$router.push('/postcontainer')"
         src="/src/assets/portaliyte-high-resolution-logo-transparent.png"
       ></v-img>
@@ -21,7 +22,7 @@
       <v-icon class="icon">mdi-plus-box</v-icon>
       <v-icon class="icon">mdi-cog</v-icon>
       <v-icon class="icon">mdi-bell-outline</v-icon>
-      <v-icon class="icon">mdi-account</v-icon>
+      <v-icon class="icon" @click="handleAccount" style="cursor: pointer">mdi-account</v-icon>
     </div>
   </div>
 </template>
@@ -44,6 +45,9 @@ export default {
       const searchParam = this.searchText
       this.searchText = ''
       this.$router.push({ name: 'Search', params: { query: searchParam } })
+    },
+    handleAccount() {
+      this.$router.push('/profilepage')
     }
   }
 }

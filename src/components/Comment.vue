@@ -27,6 +27,7 @@
           style="flex: 1"
           append-inner-icon="mdi-send-circle"
           @click:append-inner="submitReply"
+          @keyup.enter="submitReply"
           variant="solo"
         />
       </div>
@@ -84,5 +85,9 @@ const submitReply = () => {
 
 :deep(.v-icon) {
   opacity: 1 !important;
+}
+
+.v-list-item {
+  padding-right: 0;
 }
 </style>
