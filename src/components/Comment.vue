@@ -1,0 +1,88 @@
+<template>
+  <v-card class="ms-auto border" style="margin-bottom: 10px" variant="flat">
+    <v-card-title style="font-size: small">{{ commentOwner }}</v-card-title>
+
+    <v-card-text class="py-2">
+      {{ commentText }}
+    </v-card-text>
+
+    <v-list-item class="w-100">
+      <template v-slot:append>
+        <div class="justify-self-end" style="margin-right: 5px">
+          <v-icon class="me-1" icon="mdi-comment" @click="addReply"></v-icon>
+        </div>
+        <div class="justify-self-end">
+          <v-icon class="me-1" icon="mdi-heart" @click="likeComment"></v-icon>
+          <span class="subheading me-2">{{ likes }}</span>
+        </div>
+      </template>
+    </v-list-item>
+
+    <v-list-item v-if="showReplyInput" style="border-top: 2px solid #9a1220">
+      <div style="display: flex; align-items: center">
+        <v-text-field
+          hide-details="auto"
+          v-model="newReplyText"
+          placeholder="Write a reply..."
+          style="flex: 1"
+          append-inner-icon="mdi-send-circle"
+          @click:append-inner="submitReply"
+          variant="solo"
+        />
+      </div>
+    </v-list-item>
+  </v-card>
+  <v-list-item v-if="commentReplies.length">
+    <Comment v-for="(reply, index) in commentReplies" :key="index" :comment="reply" />
+  </v-list-item>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const props = defineProps({
+  comment: {
+    type: Object,
+    required: true
+  }
+})
+
+const commentOwner = ref(props.comment.commentOwner)
+const commentText = ref(props.comment.commentText)
+const likes = ref(props.comment.likes)
+const commentReplies = ref(props.comment.replies || [])
+
+const showReplyInput = ref(false)
+const newReplyText = ref('')
+
+const likeComment = () => {
+  likes.value++
+}
+
+const addReply = () => {
+  showReplyInput.value = true
+}
+
+const submitReply = () => {
+  if (newReplyText.value.trim()) {
+    commentReplies.value.push({
+      commentOwner: 'current user',
+      commentText: newReplyText.value,
+      likes: 0,
+      replies: []
+    })
+    newReplyText.value = ''
+    showReplyInput.value = false
+  }
+}
+</script>
+
+<style scoped>
+.border {
+  border: 2px solid #9a1220 !important;
+}
+
+:deep(.v-icon) {
+  opacity: 1 !important;
+}
+</style>

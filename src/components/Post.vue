@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto border" variant="flat">
-    <v-card-title>{{ header }}</v-card-title>
+    <v-card-title style="cursor: pointer" @click="$emit('post-details')">{{ header }}</v-card-title>
     <v-card-text class="py-2">
       {{ text }}
     </v-card-text>

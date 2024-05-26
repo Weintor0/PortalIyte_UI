@@ -1,7 +1,10 @@
 <template>
   <div class="top-bar">
     <div class="logo" style="display: flex; max-width: 15em; min-width: 5em">
-      <v-img src="/src/assets/portaliyte-high-resolution-logo-transparent.png"></v-img>
+      <v-img
+        @click="$router.push('/postcontainer')"
+        src="/src/assets/portaliyte-high-resolution-logo-transparent.png"
+      ></v-img>
     </div>
     <v-text-field
       v-if="showSearchAndIcons"
@@ -40,7 +43,7 @@ export default {
     handleEnter() {
       const searchParam = this.searchText
       this.searchText = ''
-      this.$router.push({ name: 'search', params: { query: searchParam } })
+      this.$router.push({ name: 'Search', params: { query: searchParam } })
     }
   }
 }

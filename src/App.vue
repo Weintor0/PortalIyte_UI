@@ -12,6 +12,7 @@
           @registerPage="goRegisterPage()"
           @succesfullyLogin="goSuccessfullyLoginPage()"
           @loginPage="goLoginPage()"
+          @postDetails="goPostDetails()"
         ></RouterView>
       </div>
 
@@ -28,7 +29,6 @@ const router = useRouter()
 
 function goSuccessfullyLoginPage() {
   router.push('/postcontainer')
-  console.log(router.currentRoute.value.meta)
 }
 
 function goLoginPage() {
@@ -37,6 +37,10 @@ function goLoginPage() {
 
 function goRegisterPage() {
   router.push('/register')
+}
+
+function goPostDetails() {
+  router.push('/postdetails')
 }
 </script>
 
