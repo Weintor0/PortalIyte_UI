@@ -27,7 +27,7 @@ const posts = [
     header: 'Biri sürekli denk diyo',
     text: 'bunu nasıl engelleriz',
     postTopic: 'Gündem',
-    postOwner: 'skicijojuk2006',
+    postOwner: 'kimsinsen',
     postLiked: 45
   },
   {

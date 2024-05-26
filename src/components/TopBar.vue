@@ -22,7 +22,7 @@
       <v-icon class="icon">mdi-plus-box</v-icon>
       <v-icon class="icon">mdi-cog</v-icon>
       <v-icon class="icon">mdi-bell-outline</v-icon>
-      <v-icon class="icon">mdi-account</v-icon>
+      <v-icon class="icon" @click="handleAccount" style="cursor: pointer">mdi-account</v-icon>
     </div>
   </div>
 </template>
@@ -45,6 +45,9 @@ export default {
       const searchParam = this.searchText
       this.searchText = ''
       this.$router.push({ name: 'Search', params: { query: searchParam } })
+    },
+    handleAccount() {
+      this.$router.push('/profilepage')
     }
   }
 }
