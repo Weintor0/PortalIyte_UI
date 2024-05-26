@@ -27,6 +27,7 @@
           style="flex: 1"
           append-inner-icon="mdi-send-circle"
           @click:append-inner="submitReply"
+          @keyup.enter="submitReply"
           variant="solo"
         />
       </div>
