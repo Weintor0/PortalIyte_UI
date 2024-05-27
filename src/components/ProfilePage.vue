@@ -1,10 +1,8 @@
 <template>
   <div class="user-info">
-    Username
-    <div class="buttons" v-if="!isUser">
-      <v-btn class="user-button" size="small" variant="outlined" color="#9a1220">Follow</v-btn>
-      <v-btn class="user-button" size="small" variant="outlined" color="#9a1220">Message</v-btn>
-      <v-btn class="user-button" size="small" variant="outlined" color="#9a1220">Report</v-btn>
+    <div class="username">
+      <v-icon class="account-icon" @click="handleAccount">mdi-account-circle</v-icon>
+      Username
     </div>
   </div>
   <div class="post-container">
@@ -58,6 +56,11 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    handleAccount() {
+      this.$router.push('/account-settings');
+    }
   }
 }
 </script>
@@ -73,6 +76,14 @@ export default {
   padding-bottom: 0px;
   display: flex;
   justify-content: space-between;
+}
+
+.account-icon{
+  font-size: 5vw;
+}
+
+.username{
+  font-size: 1vw;
 }
 
 .user-info {
@@ -94,6 +105,7 @@ export default {
 
 .user-button {
   margin-left: 10px;
+  font-size: 0.5vw;
 }
 
 :deep(.v-btn__content) {

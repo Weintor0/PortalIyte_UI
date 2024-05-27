@@ -19,8 +19,8 @@
       @keyup.enter="handleEnter"
     ></v-text-field>
     <div v-if="showSearchAndIcons" class="buttons">
-      <v-icon class="icon">mdi-plus-box</v-icon>
-      <v-icon class="icon">mdi-cog</v-icon>
+      <v-icon class="icon" @click="handleAdd" style="cursor: pointer">mdi-plus-box</v-icon>
+      <v-icon class="icon" @click="handleSettings" style="cursor: pointer">mdi-cog</v-icon>
       <v-icon class="icon">mdi-bell-outline</v-icon>
       <v-icon class="icon" @click="handleAccount" style="cursor: pointer">mdi-account</v-icon>
     </div>
@@ -48,6 +48,12 @@ export default {
     },
     handleAccount() {
       this.$router.push('/profilepage')
+    },
+    handleAdd() {
+      this.$router.push('/add-post')
+    },
+    handleSettings() {
+      this.$router.push('/settings')
     }
   }
 }
@@ -76,5 +82,6 @@ export default {
 
 .icon {
   margin-left: 1em;
+  font-size: 2vw;
 }
 </style>
