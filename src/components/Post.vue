@@ -9,7 +9,7 @@
       <v-list-item class="w-100">
         <v-list-item-title>{{ postTopic }}</v-list-item-title>
 
-        <v-list-item-subtitle>{{ postOwner }}</v-list-item-subtitle>
+        <v-list-item-subtitle style="cursor: pointer" @click="$emit('other-profile')">{{ postOwner }}</v-list-item-subtitle>
 
         <template v-slot:append>
           <div class="justify-self-end" style="margin-right: 5px">

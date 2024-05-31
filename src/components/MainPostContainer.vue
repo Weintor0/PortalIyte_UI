@@ -11,6 +11,7 @@
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
             @postDetails="$emit('post-details')"
+            @otherProfile="navigateToOtherProfile"
             :header="post.header"
             :text="post.text"
             :postTopic="post.postTopic"
@@ -48,6 +49,11 @@ export default {
           postLiked: 12372901731
         }
       ]
+    }
+  },
+  methods: {
+    navigateToOtherProfile() {
+      this.$router.push('/other-profile')
     }
   }
 }
