@@ -21,6 +21,13 @@
           ></v-text-field>
 
           <v-text-field
+            v-model="phone"
+            color="#9A1220"
+            label="Phone Number"
+            variant="underlined"
+          ></v-text-field>
+
+          <v-text-field
             v-model="password1"
             color="#9A1220"
             label="Password"

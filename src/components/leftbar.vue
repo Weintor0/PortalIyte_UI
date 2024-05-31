@@ -1,12 +1,12 @@
 <template>
     <div class="sidebar" v-if="showSidebars">
-      <div class="new-posts">
-        <div class="leftbar-header">New Posts</div>
-          <div class="new-posts-list">
+      <div class="new-topics">
+        <div class="leftbar-header">Topics</div>
+          <div class="new-topics-list">
             <ul>
-              <li v-for="post in newPosts" :key="post.id">{{ post.title }}</li>
+              <li v-for="topic in newtopics" :key="topic.id">{{ topic.title }}</li>
             </ul>
-        </div>
+          </div>
       </div>
     </div>
   </template>
@@ -21,9 +21,15 @@
   })
 
   
-  const newPosts = ref([
-    { id: 1, title: 'Biri sürekli denk diyo' },
-    { id: 2, title: 'beşiktaş' }  
+  const newtopics = ref([
+    { id: 1, title: 'Topic 1' },
+    { id: 2, title: 'Topic 2' },
+    { id: 3, title: 'Topic 3' }, 
+    { id: 4, title: 'Topic 4' }, 
+    { id: 5, title: 'Topic 5' }, 
+    { id: 6, title: 'Topic 6' }, 
+    { id: 7, title: 'Topic 7' }, 
+    { id: 8, title: 'Topic 8' },  
   ])
   
   </script>
@@ -31,11 +37,12 @@
   <style scoped>
   .sidebar {
     height: 100%;
-    border: 1px solid;
     border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   }
   
-  .new-posts{
+  .new-topics{
     padding: 10px;
     margin-bottom: 20px;
   }
@@ -45,8 +52,8 @@
     display: flex;
     justify-content: center;
     font-size: 1.2vw;
-    margin-bottom: 10px;
-    border-bottom: 1px solid;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #9a1220;
     font-weight: bold;
   }
   
@@ -58,6 +65,7 @@
   
   li {
     padding: 5px 0;
+    border-bottom: 1px solid #ddd;
   }
   </style>
   
