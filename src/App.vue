@@ -59,7 +59,7 @@ function goPostDetails() {
   grid-template-rows: 1fr 8fr;
   height: 100%;
   width: 100%;
-  background-color: rgba(128, 128, 128, 0.25);
+  
 }
 
 .bottom {

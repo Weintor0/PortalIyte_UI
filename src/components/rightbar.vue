@@ -36,7 +36,7 @@
   .sidebar {
     height: 100%;
     border-radius: 10px;
-    background-color: #f8f9fa;
+    background-color: rgba(128, 128, 128, 0.2);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   }
   

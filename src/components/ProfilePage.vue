@@ -95,8 +95,9 @@ export default {
   font-weight: 500;
   display: flex;
   justify-content: space-between;
-  background-color: white;
+  background-color: rgba(128, 128, 128, 0.2);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #9a1220;
 }
 
 .buttons {
