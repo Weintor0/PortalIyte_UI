@@ -1,11 +1,5 @@
 <template>
   <div class="post-container">
-    <div class="topics">
-      <v-btn>Topic 1</v-btn>
-      <v-btn>Topic 2</v-btn>
-      <v-btn>Topic 3</v-btn>
-      <v-btn>Topic 4</v-btn>
-    </div>
     <v-container>
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
@@ -63,13 +57,7 @@ export default {
 .post-container {
   background-color: #9a1220;
   border-radius: 10px;
-}
-
-.topics {
-  padding: 16px;
-  padding-bottom: 0px;
-  display: flex;
-  justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 :deep(.v-btn__content) {

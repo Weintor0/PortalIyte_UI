@@ -4,7 +4,7 @@
       <v-img src="/src/assets/iyte-logo-eng.png"></v-img>
     </div>
     <div class="text-fields">
-      <v-card class="register-form" max-width="25em" title="User Registration" variant="flat">
+      <v-card class="register-form" max-width="25em" title="Register" variant="flat">
         <v-container>
           <v-text-field
             v-model="Username"
@@ -17,6 +17,13 @@
             v-model="email"
             color="#9A1220"
             label="IZTECH Mail Address"
+            variant="underlined"
+          ></v-text-field>
+
+          <v-text-field
+            v-model="phone"
+            color="#9A1220"
+            label="Phone Number"
             variant="underlined"
           ></v-text-field>
 
@@ -77,20 +84,38 @@ export default {
 
 <style scoped>
 .register-container {
-  max-width: 30em;
+  height: 65vh;
+  width: 25vw;
   margin: auto;
+  padding: 2em;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
 }
 
-.logo {
-  text-align: center;
+.register-form {
+  width: 100%;
+  padding: 2em;
+  box-shadow: none;
 }
 
-.register-form,
 .button {
-  margin: auto;
+  color: white;
+  background-color: #9A1220;
+  padding: 0.5em 1em;
+  margin: 0.5em 0;
+  border-radius: 5px;
 }
 
-.button {
-  color: rgb(154, 18, 32);
+.button:hover {
+  background-color: #7F0E1A;
+}
+
+
+:deep(.v-card-title) {
+  font-size: 1.5vw;
+  font-weight: bold;
 }
 </style>

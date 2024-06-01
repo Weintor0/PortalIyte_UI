@@ -90,12 +90,14 @@ export default {
   margin-bottom: 10px;
   width: 100%;
   border-radius: 10px;
-  border: 2px solid #9a1220;
   padding: 10px;
   font-size: 1.25rem;
   font-weight: 500;
   display: flex;
   justify-content: space-between;
+  background-color: rgba(128, 128, 128, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #9a1220;
 }
 
 .buttons {

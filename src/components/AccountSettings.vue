@@ -53,7 +53,8 @@
     padding: 20px;
     border-radius: 10px;
     margin: 0 auto;
-    border: 1px solid;
+    background-color: rgba(128, 128, 128, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   }
   
   .add-header{

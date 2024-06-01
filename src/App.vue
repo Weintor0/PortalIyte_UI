@@ -58,6 +58,8 @@ function goPostDetails() {
   display: grid;
   grid-template-rows: 1fr 8fr;
   height: 100%;
+  width: 100%;
+  
 }
 
 .bottom {
@@ -70,5 +72,6 @@ function goPostDetails() {
 .main-container {
   padding: 1em;
 }
+
 </style>
 ./components/common/TopBar.vue
