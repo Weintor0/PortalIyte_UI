@@ -9,6 +9,8 @@ import AddPost from '../components/AddPost.vue'
 import Settings from '../components/Settings.vue'
 import AccountSettings from '../components/AccountSettings.vue'
 import OtherProfilePage from '../components/OtherProfilePage.vue'
+import TopicPage from '../components/TopicPage.vue'
+import Report from '../components/Report.vue'
 
 const routes = [
   {
@@ -71,8 +73,21 @@ const routes = [
     name: 'OtherProfilePage',
     component: OtherProfilePage,
     meta: { showTopBar: true, showSidebars: true }
+  },
+  {
+    path: '/topic-page',
+    name: 'TopicPage',
+    component: TopicPage,
+    meta: { showTopBar: true, showSidebars: true }
+  },
+  {
+    path: '/report',
+    name: 'Report',
+    component: Report,
+    meta: { showTopBar: true, showSidebars: false }
   }
 ]
+
 
 const router = createRouter({
   history: createWebHistory(),
