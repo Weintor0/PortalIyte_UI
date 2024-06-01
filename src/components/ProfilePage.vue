@@ -4,6 +4,20 @@
       <v-icon class="account-icon" @click="handleAccount">mdi-account-circle</v-icon>
       Username
     </div>
+    <div class="user-stats">
+      <div class="stat">
+        <span class="info-label">Followers</span>
+        <span class="info-value">502</span>
+      </div>
+      <div class="stat">
+        <span class="info-label">Following</span>
+        <span class="info-value">105</span>
+      </div>
+      <div class="stat">
+        <span class="info-label">Posts</span>
+        <span class="info-value">{{ posts.length }}</span>
+      </div>
+    </div>
   </div>
   <div class="post-container">
     <div class="topics">
@@ -84,6 +98,7 @@ export default {
 
 .username{
   font-size: 1vw;
+  width: 40%;
 }
 
 .user-info {
@@ -94,8 +109,7 @@ export default {
   font-size: 1.25rem;
   font-weight: 500;
   display: flex;
-  justify-content: space-between;
-  background-color: rgba(128, 128, 128, 0.2);
+  background-color: rgba(128, 128, 128, 0.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #9a1220;
 }
@@ -116,5 +130,22 @@ export default {
 
 :deep(.v-btn__content) {
   color: black;
+}
+
+.user-stats{
+  display: flex;
+  align-items: center;
+}
+
+.stat{
+  display: flex;
+  flex-direction: column-reverse;
+  margin-right: 15px; 
+}
+
+.info-value{
+  font-size: 1.2vw;
+  display: flex;
+  justify-content: center;
 }
 </style>

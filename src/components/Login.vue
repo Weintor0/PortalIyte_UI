@@ -54,7 +54,7 @@ export default {
   padding: 2em;
   background-color: white;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
 }
