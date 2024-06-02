@@ -1,6 +1,7 @@
 <template>
   <v-card class="mx-auto border" variant="flat">
     <v-card-title style="cursor: pointer" @click="$emit('post-details')">{{ header }}</v-card-title>
+    <img v-if="image" :src="image" alt="Post Image" style="max-width: 100%; height: auto;" />
     <v-card-text class="py-2">
       {{ text }}
     </v-card-text>
@@ -11,7 +12,6 @@
 
         <v-list-item-subtitle style="cursor: pointer" @click="$emit('other-profile')">{{ postOwner }}</v-list-item-subtitle>
         
-        <img :src="image">
         <template v-slot:append>
           <div class="justify-self-end" style="margin-right: 5px">
             <v-icon class="me-1" icon="mdi-comment"></v-icon>

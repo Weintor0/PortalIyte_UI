@@ -11,6 +11,7 @@
             :postTopic="post.postTopic"
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
+            :image="post.image"
           />
         </v-col>
       </v-row>
@@ -50,8 +51,7 @@ export default {
     const allPosts = await this.getPostsForMainPage('https://portal-iyte-be.onrender.com/api/post')
     console.log('All posts:', allPosts)
     allPosts.forEach(post => {
-      // let image = post.image;
-      image = base64Encode(post.image);
+      let image = `data:image/jpeg;base64,${post.image}`
       this.posts.push({
         id:post.postId,
         header: post.title,
