@@ -26,12 +26,12 @@
             @click="setActiveButton('posts')"
         >Posts</v-btn>
         <v-btn 
-            :class="{'search-button': true, 'active': activeButton === 'topics'}"
-            @click="setActiveButton('topics')"
+            :class="{'search-button': true, 'active': activeButton === 'comments'}"
+            @click="setActiveButton('comments')"
         >Comments</v-btn>
         <v-btn 
-            :class="{'search-button': true, 'active': activeButton === 'users'}"
-            @click="setActiveButton('users')"
+            :class="{'search-button': true, 'active': activeButton === 'likes'}"
+            @click="setActiveButton('likes')"
         >Likes</v-btn>
         <v-btn 
             :class="{'search-button': true, 'active': activeButton === 'saved'}"
@@ -59,15 +59,23 @@
       </v-row>
     </v-container>
   </div>
+  <div v-if="activeButton === 'comments'" class="">
+    <div v-for="(comment, index) in comments" @click="handleCommentClick(comment.postId)">
+      <Comment :key="index" :comment="comment"/>
+    </div>
+  </div>
 </template>
 
 <script>
+import Comment from './Comment.vue';
 import Post from './Post.vue'
+import VueCookies from 'vue-cookies'
 
 export default {
   name: "SearchButtons",
   components: {
-    Post
+    Post,
+    Comment
   },
   data() {
     return {
@@ -76,51 +84,73 @@ export default {
       username: "",
       followers: 0,
       following: 0,
-      // posts: [
-      //   {
-      //     header: 'Biri sürekli denk diyo',
-      //     text: 'bunu nasıl engelleriz',
-      //     postTopic: 'Gündem',
-      //     postOwner: 'kimsinsen',
-      //     postLiked: 45
-      //   },
-      //   {
-      //     header: 'beşiktaş',
-      //     text: 'gene şampiyon',
-      //     postTopic: 'spor',
-      //     postOwner: 'ENBÜYÜKKARTAL',
-      //     postLiked: 12372901731
-      //   }
-      // ]
       posts: [],
+      comments: [],
+      likes: [],
+      saved: [],
     }
   },
   async created(){
-    const user = await this.getUserDetails('https://portal-iyte-be.onrender.com/api/user/' + 4);
+    const user = await this.getUserDetails('https://portal-iyte-be.onrender.com/api/user/' + VueCookies.get('user'));
     this.username = user.username;
     this.followers = user.followerCount;
     this.following = user.followingCount;
-    const posts = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/post/user/' + 4);
-    posts.forEach(post => {
-      this.posts.push({
-        id: post.postId,
-        userId: post.user.userId,
-        topicId: post.topic.topicId,
-        header: post.title,
-        text: post.content,
-        postTopic: post.topic.name,
-        postOwner: post.user.username,
-        postLiked: post.likeCount,
-        postCommentCount: post.commentCount
-      });
-    })
+    this.initPosts();
+    this.initComments();
   },
   methods: {
+    async initPosts(){
+      const posts = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/post/user/' + VueCookies.get('user'));
+      posts.forEach(post => {
+        this.posts.push({
+          id: post.postId,
+          userId: post.user.userId,
+          topicId: post.topic.topicId,
+          header: post.title,
+          text: post.content,
+          postTopic: post.topic.name,
+          postOwner: post.user.username,
+          postLiked: post.likeCount,
+          postCommentCount: post.commentCount,
+          image: post.image
+        });
+      })
+    },
+    async initComments(){
+      this.comments = await this.getCommentsOfUser('https://portal-iyte-be.onrender.com/api/user/comments/' + VueCookies.get('user'));
+      console.log('Comments:', this.comments);
+    },
+    handleCommentClick(postId) {
+      this.$router.push('/postdetails/' + postId);
+    },
     handleAccount() {
       this.$router.push('/account-settings');
     },
     setActiveButton(button) {
         this.activeButton = button;
+    },
+    async getCommentsOfUser(fetchDestination){
+      let returnedComments;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            // const errorMessages = await response.text();
+            // alert(errorMessages);
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Comments fetched successfully:', data);
+          returnedComments = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching comments:', error);
+        });
+      return returnedComments;
     },
     async getUserDetails(fetchDestination){
       let returnedUser;
