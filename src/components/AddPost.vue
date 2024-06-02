@@ -1,68 +1,115 @@
 <template>
-  <div class="container">
-    <div class="add-header">Create Post</div>
-    <form @submit.prevent="submitPost">
-      <div>
-        <label for="issue" class="input-header">Topic</label>
-        <select id="issue" v-model="post.topic">
-          <option value="spam">Spam</option>
-          <option value="harassment">Harassment</option>
-          <option value="misinformation">Misinformation</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div>
-        <label for="title" class="input-header">Title</label>
-        <input type="text" id="title" v-model="post.title" />
-      </div>
-      <div>
-        <label for="text" class="input-header">Text</label>
-        <textarea id="text" v-model="post.text"></textarea>
-      </div>
-      <div class="bottom-container">
-        <div class="add-images">
-          <label>Add images</label>
-          <v-icon class="add-icon" @click="addImage">mdi-plus-circle</v-icon>
-        </div>
-        <button type="submit">Post</button>
-      </div>
-    </form>
-  </div>
+  <v-alert
+    v-if="visible"
+    type="error"
+    dismissible
+    @input="visible = false"
+    :text="this.errorMessage"
+  ></v-alert>
+  <div class="add-header">Create Post</div>
+  <form @submit.prevent="submitPost">
+    <div>
+      <label for="topic" class="input-header">Topic</label>
+      <v-select
+        v-model="chosenTopic"
+        :items="topics"
+        color="#9A1220"
+        variant="underlined"
+      ></v-select>
+    </div>
+    <div>
+      <label for="title" class="input-header">Title</label>
+      <v-text-field v-model="title" color="#9A1220" variant="underlined"></v-text-field>
+    </div>
+    <div>
+      <label for="text" class="input-header">Text</label>
+      <v-textarea class="textarea" v-model="text" color="#9A1220" variant="underlined"></v-textarea>
+    </div>
+    <div class="bottom-container">
+      <!--
+      <div class="add-images">
+        <label>Add images</label>
+        <v-icon class="add-icon" @click="addImage">mdi-plus-circle</v-icon>
+      </div>-->
+      <v-btn class="button" color="#9a1220" type="submit">Post</v-btn>
+    </div>
+  </form>
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
 export default {
   data() {
     return {
-      post: {
-        topic: '',
-        title: '',
-        text: ''
-      }
+      dictionary: {},
+      topics: [],
+      chosenTopic: null,
+      title: null,
+      text: null,
+      image: null,
+      errorMessage: null,
+      visible: false
     }
   },
   methods: {
-    addImage() {
-      console.log('Image added', this.post)
-    },
-    submitPost() {
-      console.log('Post submitted:', this.post)
+    addImage() {},
+    async submitPost() {
+      if (!this.chosenTopic || !this.title || !this.text) {
+        this.errorMessage = 'Please fill all the fields'
+        this.visible = true
+        return
+      }
+      await fetch('https://portal-iyte-be.onrender.com/api/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          topicId: this.dictionary[this.chosenTopic],
+          userId: VueCookies.get('user'),
+          title: this.title,
+          content: this.text,
+          image: this.image
+        })
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('An error occurred during registration')
+          }
+          this.visible = false
+          this.chosenTopic = null
+          this.title = null
+          this.text = null
+        })
+        .then((response) => {
+          this.$route.push('/postcontainer')
+        })
     }
+  },
+  async mounted() {
+    await fetch('https://portal-iyte-be.onrender.com/api/topic', {
+      method: 'GET'
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(response.text())
+        }
+        return response.json()
+      })
+      .then((data) => {
+        data.forEach((item) => {
+          this.topics.push(item.name)
+          this.dictionary[item.name] = item.id
+        })
+      })
+      .catch((error) => {
+        console.error('An error occurred during gettin topics:', error)
+      })
   }
 }
 </script>
 
 <style scoped>
-.container {
-  height: 70%;
-  width: 70%;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 0 auto;
-  background-color: rgba(128, 128, 128, 0.1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-}
-
 .add-header {
   text-align: start;
   margin-bottom: 20px;
@@ -89,7 +136,6 @@ textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background: #fff;
 }
 
 textarea {
@@ -132,26 +178,5 @@ button[type='submit'] {
 
 .add-icon {
   font-size: 2vw;
-}
-
-select {
-  width: 50%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1vw;
-  background-color: #fff;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
-select:focus {
-  outline: none;
-  border-color: #aaa;
-}
-
-select option {
-  padding: 10px;
 }
 </style>
