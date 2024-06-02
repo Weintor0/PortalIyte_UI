@@ -1,11 +1,7 @@
 <template>
   <div class="top-bar">
     <div class="logo" style="display: flex; max-width: 15em; min-width: 5em">
-      <v-img
-        style="cursor: pointer"
-        @click="handleLogoClick"
-        src="/src/assets/logo.png"
-      ></v-img>
+      <v-img style="cursor: pointer" @click="handleLogoClick" src="/src/assets/logo.png"></v-img>
     </div>
     <v-text-field
       v-if="showSearchAndIcons"
@@ -16,40 +12,48 @@
       clearable
       hide-details="auto"
       v-model="searchText"
+      @click="handleSearch"
       @keyup.enter="handleEnter"
     ></v-text-field>
     <div v-if="showSearchAndIcons" class="buttons">
       <v-icon class="icon" @click="handleAdd" style="cursor: pointer">mdi-plus-box</v-icon>
       <!-- <v-icon class="icon">mdi-bell-outline</v-icon> -->
       <v-menu>
-      <template v-slot:activator="{ props }">
-        <v-icon class="icon" v-bind="props" style="cursor: pointer">mdi-account</v-icon>
-      </template>
-      <v-list>
-        <v-list-item class="menu-content" v-for="(item, index) in items" :key="index" :value="index" @click="handleItemClick(index)">
-        <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-        <div class="item-content">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </div>
-      </v-list-item>
-      </v-list>
-    </v-menu>
+        <template v-slot:activator="{ props }">
+          <v-icon class="icon" v-bind="props" style="cursor: pointer">mdi-account</v-icon>
+        </template>
+        <v-list>
+          <v-list-item
+            class="menu-content"
+            v-for="(item, index) in items"
+            :key="index"
+            :value="index"
+            @click="handleItemClick(index)"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <div class="item-content">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </div>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import VueCookies from 'vue-cookies'
+
 export default {
   data() {
     return {
       searchText: '',
       items: [
-        { title: 'Profile Page', route: '/profilepage', icon: 'mdi-account-circle'},
+        { title: 'Profile Page', route: '/profilepage', icon: 'mdi-account-circle' },
         { title: 'Settings', route: '/settings', icon: 'mdi-cog' },
         { title: 'Log out', route: '/', icon: 'mdi-logout' }
-
       ]
     }
   },
@@ -73,12 +77,19 @@ export default {
     },
     handleItemClick(index: number) {
       const route = this.items[index].route
+      if (route === '/') {
+        const allCookies = VueCookies.keys()
+        allCookies.forEach((cookie) => VueCookies.remove(cookie))
+      }
       this.$router.push(route)
     },
     handleLogoClick() {
       if (this.showSearchAndIcons) {
-        this.$router.push('/postcontainer');
+        this.$router.push('/postcontainer')
       }
+    },
+    handleSearch() {
+      this.$router.push('/search-page')
     }
   }
 }
@@ -99,7 +110,7 @@ export default {
   margin-right: 3em;
 }
 
-.search-bar{
+.search-bar {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -133,5 +144,4 @@ export default {
 .item-content {
   font-size: 1vw;
 }
-
 </style>

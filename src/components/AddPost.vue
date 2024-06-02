@@ -72,10 +72,23 @@ label {
   margin-bottom: 5px;
 }
 
+input[type='text'],
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+textarea {
+  resize: vertical;
+  height: 100px;
+}
+
 .bottom-container {
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -84,6 +97,9 @@ label {
   display: flex;
   font-size: 1vw;
   flex-direction: column;
+}
+
+.add-images button {
   width: 30px;
   height: 30px;
   font-size: 20px;
@@ -91,12 +107,15 @@ label {
   cursor: pointer;
 }
 
-.button {
-  color: white;
-  background-color: #9a1220;
-  padding: 0.5em 1em;
-  margin: 0.5em 0;
-  border-radius: 5px;
+button[type='submit'] {
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 20%;
+  height: 50%;
+  text-align: center;
+  background-color: #d9d9d9;
+  font-size: 1vw;
 }
 
 .add-icon {
