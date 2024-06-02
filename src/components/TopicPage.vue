@@ -10,12 +10,15 @@
         <v-row>
           <v-col v-for="(post, index) in posts" :key="index" cols="12">
             <Post
-              @postDetails="$emit('post-details')"
+              @postDetails="$emit('post-details', post.id)"
+              @otherProfile="navigateToOtherProfile"
+              :id="post.id"
               :header="post.header"
               :text="post.text"
               :postTopic="post.postTopic"
               :postOwner="post.postOwner"
               :postLiked="post.postLiked"
+              :image="post.image"
             />
           </v-col>
         </v-row>
@@ -34,22 +37,62 @@
       return {
         istopic: false,
         topicName: '',
-        posts: [
-          {
-            header: 'Biri sürekli denk diyo',
-            text: 'bunu nasıl engelleriz',
-            postTopic: 'Gündem',
-            postOwner: 'kimsinsen',
-            postLiked: 45
-          }
-        ]
+        posts: [],
+        newtopics: []
       }
     },
-    created() {
-    if (this.posts.length > 0) {
-      this.topicName = this.posts[0].postTopic;
+
+    async created() {
+      const topicId = this.$route.params.id; 
+      const topicResponse = await fetch(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/topic/${topicId}`);
+      const topicData = await topicResponse.json();
+      this.topicName = topicData.name; 
+
+      
+      const allPosts = await this.getPostsForTopic(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/topic/${topicId}`)
+      console.log('All posts:', allPosts)
+      allPosts.forEach(post => {
+        let image = ''
+        if(post.image){
+          image = `data:image/jpeg;base64,${post.image}`
         }
+        this.posts.push({
+          id:post.postId,
+          header: post.title,
+          text: post.content,
+          postTopic: post.topic.name,
+          postOwner: post.user.username,
+          postLiked: post.likeCount,
+          image: image
+        })
+      })
     },
+  methods: {
+    navigateToOtherProfile() {
+      this.$router.push('/other-profile')
+    },
+    async getPostsForTopic(fetchDestination) {
+      let returnedPosts;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Posts fetched successfully:', data);
+          returnedPosts = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching posts:', error);
+        });
+      return returnedPosts;
+    },
+  },
   }
   </script>
   

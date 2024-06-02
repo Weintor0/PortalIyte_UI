@@ -79,9 +79,10 @@ const routes = [
     meta: { showTopBar: true, showSidebars: true }
   },
   {
-    path: '/topic-page',
+    path: '/topic-page/:id',
     name: 'TopicPage',
     component: TopicPage,
+    props: true,
     meta: { showTopBar: true, showSidebars: true }
   },
   {
