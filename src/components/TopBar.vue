@@ -16,6 +16,7 @@
       clearable
       hide-details="auto"
       v-model="searchText"
+      @click="handleSearch"
       @keyup.enter="handleEnter"
     ></v-text-field>
     <div v-if="showSearchAndIcons" class="buttons">
@@ -79,6 +80,9 @@ export default {
       if (this.showSearchAndIcons) {
         this.$router.push('/postcontainer');
       }
+    },
+    handleSearch() {
+      this.$router.push('/search-page')
     }
   }
 }
