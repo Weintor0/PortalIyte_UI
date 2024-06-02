@@ -29,8 +29,7 @@
     data() {
       return {
         Report: {
-          topic: '',
-          title: '',
+          issue: '',
           text: ''
         }
       };
@@ -83,6 +82,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background: #fff;
   } 
   
   textarea {
