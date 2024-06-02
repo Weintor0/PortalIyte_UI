@@ -84,6 +84,7 @@
     font-weight: 500;
     display: flex;
     justify-content: space-between;
+    background-color: rgba(128, 128, 128, 0.1);
   }
   
   .buttons {

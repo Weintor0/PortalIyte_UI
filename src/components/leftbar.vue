@@ -4,7 +4,7 @@
         <div class="leftbar-header">Topics</div>
           <div class="new-topics-list">
             <ul>
-              <li v-for="topic in newtopics" :key="topic.id">{{ topic.title }}</li>
+              <button class="topic-button" v-for="topic in newtopics" :key="topic.id" @click="handleTopicClick(topic)">{{ topic.title }}</button>
             </ul>
           </div>
       </div>
@@ -13,6 +13,9 @@
   
   <script setup lang="ts">
   import { ref } from 'vue'
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
 
   const props = withDefaults(defineProps<{
     showSidebars?: boolean
@@ -31,6 +34,10 @@
     { id: 7, title: 'Topic 7' }, 
     { id: 8, title: 'Topic 8' },  
   ])
+
+  const handleTopicClick = (topic) => {
+    router.push('/topic-page')
+  }
   
   </script>
   
@@ -58,14 +65,21 @@
   }
   
   ul {
+    display: flex;
     font-size: 1vw;
     list-style-type: none;
     padding: 0;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  li {
+
+  .topic-button{
+    width: 100%;
+    text-align: left;
     padding: 5px 0;
     border-bottom: 1px solid #ddd;
   }
+  
+  
   </style>
   

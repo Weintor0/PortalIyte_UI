@@ -4,10 +4,24 @@
         <v-icon class="account-icon">mdi-account-circle</v-icon>
         Username
       </div>
+      <div class="user-stats">
+        <div class="stat">
+          <span class="info-label">Followers</span>
+          <span class="info-value">502</span>
+        </div>
+        <div class="stat">
+          <span class="info-label">Following</span>
+          <span class="info-value">105</span>
+        </div>
+        <div class="stat">
+          <span class="info-label">Posts</span>
+          <span class="info-value">{{ posts.length }}</span>
+        </div>
+      </div>
       <div class="buttons" v-if="!isUser">
-        <v-btn class="user-button" size="small" variant="outlined" color="#9a1220">Follow</v-btn>
-        <v-btn class="user-button" size="small" variant="outlined" color="#9a1220">Message</v-btn>
-        <v-btn class="user-button" size="small" variant="outlined" color="#9a1220">Report</v-btn>
+        <v-btn :class="{'user-button': !isFollowing, 'toggleOn': isFollowing}" size="small" variant="outlined" color="#9a1220" @click="follow">Follow</v-btn>
+        <v-btn class="user-button" size="small" variant="outlined" color="#9a1220" @click="message">Message</v-btn>
+        <v-btn class="user-button" size="small" variant="outlined" color="#9a1220" @click="report">Report</v-btn>
       </div>
     </div>
     <div class="post-container">
@@ -44,6 +58,7 @@
     data() {
       return {
         isUser: false,
+        isFollowing: false,
         posts: [
           {
             header: 'Biri sürekli denk diyo',
@@ -65,6 +80,15 @@
     methods: {
       navigateToOtherProfile() {
         this.$router.push('/other-profile')
+      },
+      follow() {
+        this.isFollowing = !this.isFollowing;
+      },
+      message() {
+        
+      },
+      report() {
+        this.$router.push('/report')
       }
     }
   }
@@ -120,6 +144,29 @@
   
   :deep(.v-btn__content) {
     color: black;
+  }
+
+  .toggleOn{
+    background-color: rgba(154, 18, 32, 0.5);
+    font-size: 0.5vw;
+    margin-left: 10px;
+  }
+
+  .user-stats{
+    display: flex;
+    align-items: center;
+  }
+
+  .stat{
+    display: flex;
+    flex-direction: column-reverse;
+    margin-right: 15px; 
+  }
+
+  .info-value{
+    font-size: 1.2vw;
+    display: flex;
+    justify-content: center;
   }
   </style>
   
