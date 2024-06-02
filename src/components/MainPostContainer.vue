@@ -49,7 +49,8 @@ export default {
       posts: []
     }
   },
-  async created() {
+  async mounted() {
+    console.log("adasdsd")
     const allPosts = await this.getPostsForMainPage('https://portal-iyte-be.onrender.com/api/post')
     console.log('All posts:', allPosts)
     allPosts.forEach((post) => {

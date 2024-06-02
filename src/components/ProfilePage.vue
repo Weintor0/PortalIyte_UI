@@ -2,16 +2,16 @@
   <div class="user-info">
     <div class="username">
       <v-icon class="account-icon" @click="handleAccount">mdi-account-circle</v-icon>
-      Username
+      {{ username }}
     </div>
     <div class="user-stats">
       <div class="stat">
         <span class="info-label">Followers</span>
-        <span class="info-value">502</span>
+        <span class="info-value">{{ followers }}</span>
       </div>
       <div class="stat">
         <span class="info-label">Following</span>
-        <span class="info-value">105</span>
+        <span class="info-value">{{ following }}</span>
       </div>
       <div class="stat">
         <span class="info-label">Posts</span>
@@ -39,17 +39,21 @@
         >Saved</v-btn>
     </div>
   </div>
-  <div class="post-container">
+  <div v-if="activeButton === 'posts'" class="post-container">
     <v-container>
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
             @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
             :header="post.header"
             :text="post.text"
             :postTopic="post.postTopic"
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
           />
         </v-col>
       </v-row>
@@ -69,23 +73,47 @@ export default {
     return {
       activeButton: null,
       isUser: false,
-      posts: [
-        {
-          header: 'Biri sürekli denk diyo',
-          text: 'bunu nasıl engelleriz',
-          postTopic: 'Gündem',
-          postOwner: 'kimsinsen',
-          postLiked: 45
-        },
-        {
-          header: 'beşiktaş',
-          text: 'gene şampiyon',
-          postTopic: 'spor',
-          postOwner: 'ENBÜYÜKKARTAL',
-          postLiked: 12372901731
-        }
-      ]
+      username: "",
+      followers: 0,
+      following: 0,
+      // posts: [
+      //   {
+      //     header: 'Biri sürekli denk diyo',
+      //     text: 'bunu nasıl engelleriz',
+      //     postTopic: 'Gündem',
+      //     postOwner: 'kimsinsen',
+      //     postLiked: 45
+      //   },
+      //   {
+      //     header: 'beşiktaş',
+      //     text: 'gene şampiyon',
+      //     postTopic: 'spor',
+      //     postOwner: 'ENBÜYÜKKARTAL',
+      //     postLiked: 12372901731
+      //   }
+      // ]
+      posts: [],
     }
+  },
+  async created(){
+    const user = await this.getUserDetails('https://portal-iyte-be.onrender.com/api/user/' + 4);
+    this.username = user.username;
+    this.followers = user.followerCount;
+    this.following = user.followingCount;
+    const posts = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/post/user/' + 4);
+    posts.forEach(post => {
+      this.posts.push({
+        id: post.postId,
+        userId: post.user.userId,
+        topicId: post.topic.topicId,
+        header: post.title,
+        text: post.content,
+        postTopic: post.topic.name,
+        postOwner: post.user.username,
+        postLiked: post.likeCount,
+        postCommentCount: post.commentCount
+      });
+    })
   },
   methods: {
     handleAccount() {
@@ -93,7 +121,53 @@ export default {
     },
     setActiveButton(button) {
         this.activeButton = button;
-    }
+    },
+    async getUserDetails(fetchDestination){
+      let returnedUser;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            // const errorMessages = await response.text();
+            // alert(errorMessages);
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('User fetched successfully:', data);
+          returnedUser = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching user:', error);
+        });
+      return returnedUser;
+    },
+    async getPostsOfUser(fetchDestination) {
+      let returnedPosts;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            // const errorMessages = await response.text();
+            // alert(errorMessages);
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Posts fetched successfully:', data);
+          returnedPosts = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching posts:', error);
+        });
+      return returnedPosts;
+    },
   }
 }
 </script>
