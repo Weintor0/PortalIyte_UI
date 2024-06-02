@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { id } from 'vuetify/locale';
+import { id } from 'vuetify/locale'
 import Post from './Post.vue'
 
 export default {
@@ -52,13 +52,13 @@ export default {
   async created() {
     const allPosts = await this.getPostsForMainPage('https://portal-iyte-be.onrender.com/api/post')
     console.log('All posts:', allPosts)
-    allPosts.forEach(post => {
+    allPosts.forEach((post) => {
       let image = ''
-      if(post.image){
+      if (post.image) {
         image = `data:image/jpeg;base64,${post.image}`
       }
       this.posts.push({
-        id:post.postId,
+        id: post.postId,
         header: post.title,
         text: post.content,
         postTopic: post.topic.name,
@@ -73,29 +73,29 @@ export default {
       this.$router.push('/other-profile')
     },
     async getPostsForMainPage(fetchDestination) {
-      let returnedPosts;
+      let returnedPosts
       await fetch(fetchDestination, {
         method: 'GET',
-        redirect: 'follow',
+        redirect: 'follow'
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
             // const errorMessages = await response.text();
             // alert(errorMessages);
-            throw new Error(response.text());
+            throw new Error(response.text())
           }
-          return response.json();
+          return response.json()
         })
-        .then(data => {
-          console.log('Posts fetched successfully:', data);
-          returnedPosts = data;
+        .then((data) => {
+          console.log('Posts fetched successfully:', data)
+          returnedPosts = data
         })
-        .catch(error => {
-          console.error('An error occurred during fetching posts:', error);
-        });
-      return returnedPosts;
-    },
-  },
+        .catch((error) => {
+          console.error('An error occurred during fetching posts:', error)
+        })
+      return returnedPosts
+    }
+  }
 }
 </script>
 
