@@ -36,6 +36,14 @@ export default {
       type: Number,
       default: -1
     },
+    userId: {
+      type: Number,
+      default: -1
+    },
+    topicId: {
+      type: Number,
+      default: -1
+    },
     header: {
       type: String,
       default: 'Header'

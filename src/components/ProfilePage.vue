@@ -2,16 +2,16 @@
   <div class="user-info">
     <div class="username">
       <v-icon class="account-icon" @click="handleAccount">mdi-account-circle</v-icon>
-      Username
+      {{ username }}
     </div>
     <div class="user-stats">
       <div class="stat">
         <span class="info-label">Followers</span>
-        <span class="info-value">502</span>
+        <span class="info-value">{{ followers }}</span>
       </div>
       <div class="stat">
         <span class="info-label">Following</span>
-        <span class="info-value">105</span>
+        <span class="info-value">{{ following }}</span>
       </div>
       <div class="stat">
         <span class="info-label">Posts</span>
@@ -26,12 +26,12 @@
             @click="setActiveButton('posts')"
         >Posts</v-btn>
         <v-btn 
-            :class="{'search-button': true, 'active': activeButton === 'topics'}"
-            @click="setActiveButton('topics')"
+            :class="{'search-button': true, 'active': activeButton === 'comments'}"
+            @click="setActiveButton('comments')"
         >Comments</v-btn>
         <v-btn 
-            :class="{'search-button': true, 'active': activeButton === 'users'}"
-            @click="setActiveButton('users')"
+            :class="{'search-button': true, 'active': activeButton === 'likes'}"
+            @click="setActiveButton('likes')"
         >Likes</v-btn>
         <v-btn 
             :class="{'search-button': true, 'active': activeButton === 'saved'}"
@@ -39,17 +39,66 @@
         >Saved</v-btn>
     </div>
   </div>
-  <div class="post-container">
+  <div v-if="activeButton === 'posts'" class="post-container">
     <v-container>
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
             @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
             :header="post.header"
             :text="post.text"
             :postTopic="post.postTopic"
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+  <div v-if="activeButton === 'comments'" class="">
+    <div v-for="(comment, index) in comments" @click="handleCommentClick(comment.post_id)">
+      <Comment :key="index" :comment="comment"/>
+    </div>
+  </div>
+  <div v-if="activeButton === 'likes'" class="post-container">
+    <v-container>
+      <v-row>
+        <v-col v-for="(post, index) in posts" :key="index" cols="12">
+          <Post
+            @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
+            :header="post.header"
+            :text="post.text"
+            :postTopic="post.postTopic"
+            :postOwner="post.postOwner"
+            :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+  <div v-if="activeButton === 'saved'" class="post-container">
+    <v-container>
+      <v-row>
+        <v-col v-for="(post, index) in posts" :key="index" cols="12">
+          <Post
+            @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
+            :header="post.header"
+            :text="post.text"
+            :postTopic="post.postTopic"
+            :postOwner="post.postOwner"
+            :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
           />
         </v-col>
       </v-row>
@@ -58,42 +107,173 @@
 </template>
 
 <script>
+import Comment from './Comment.vue';
 import Post from './Post.vue'
+import VueCookies from 'vue-cookies'
 
 export default {
   name: "SearchButtons",
   components: {
-    Post
+    Post,
+    Comment
   },
   data() {
     return {
       activeButton: null,
       isUser: false,
-      posts: [
-        {
-          header: 'Biri sürekli denk diyo',
-          text: 'bunu nasıl engelleriz',
-          postTopic: 'Gündem',
-          postOwner: 'kimsinsen',
-          postLiked: 45
-        },
-        {
-          header: 'beşiktaş',
-          text: 'gene şampiyon',
-          postTopic: 'spor',
-          postOwner: 'ENBÜYÜKKARTAL',
-          postLiked: 12372901731
-        }
-      ]
+      username: "",
+      followers: 0,
+      following: 0,
+      posts: [],
+      comments: [],
+      likes: [],
+      saved: [],
     }
   },
+  async mounted(){
+    const user = await this.getUserDetails('https://portal-iyte-be.onrender.com/api/user/' + VueCookies.get('user'));
+    this.username = user.username;
+    this.followers = user.followerCount;
+    this.following = user.followingCount;
+    await this.initPosts();
+    await this.initComments();
+    await this.initLikes();
+    await this.initSaved(); 
+  },
   methods: {
+    async initPosts(){
+      const posts = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/post/user/' + VueCookies.get('user'));
+      posts.forEach(post => {
+        this.posts.push({
+          id: post.postId,
+          userId: post.user.userId,
+          topicId: post.topic.topicId,
+          header: post.title,
+          text: post.content,
+          postTopic: post.topic.name,
+          postOwner: post.user.username,
+          postLiked: post.likeCount,
+          postCommentCount: post.commentCount,
+          image: post.image
+        });
+      })
+    },
+    async initComments(){
+      this.comments = await this.getCommentsOfUser('https://portal-iyte-be.onrender.com/api/user/comments/' + VueCookies.get('user'));
+      console.log('Comments:', this.comments);
+    },
+    async initLikes(){
+      const likes = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/user/likedPosts/' + VueCookies.get('user'));
+      likes.forEach(like => {
+        this.likes.push({
+          id: like.postId,
+          userId: like.user.userId,
+          topicId: like.topic.topicId,
+          header: like.title,
+          text: like.content,
+          postTopic: like.topic.name,
+          postOwner: like.user.username,
+          postLiked: like.likeCount,
+          postCommentCount: like.commentCount,
+          image: like.image
+        });
+      })
+    },
+    async initSaved(){
+      const saved = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/user/savedPosts/' + VueCookies.get('user'));
+      saved.forEach(save => {
+        this.saved.push({
+          id: save.postId,
+          userId: save.user.userId,
+          topicId: save.topic.topicId,
+          header: save.title,
+          text: save.content,
+          postTopic: save.topic.name,
+          postOwner: save.user.username,
+          postLiked: save.likeCount,
+          postCommentCount: save.commentCount,
+          image: save.image
+        });
+      })
+    },
+    handleCommentClick(postId) {
+      this.$router.push('/postdetails/' + postId);
+    },
     handleAccount() {
       this.$router.push('/account-settings');
     },
     setActiveButton(button) {
         this.activeButton = button;
-    }
+    },
+    async getCommentsOfUser(fetchDestination){
+      let returnedComments;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            // const errorMessages = await response.text();
+            // alert(errorMessages);
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Comments fetched successfully:', data);
+          returnedComments = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching comments:', error);
+        });
+      return returnedComments;
+    },
+    async getUserDetails(fetchDestination){
+      let returnedUser;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            // const errorMessages = await response.text();
+            // alert(errorMessages);
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('User fetched successfully:', data);
+          returnedUser = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching user:', error);
+        });
+      return returnedUser;
+    },
+    async getPostsOfUser(fetchDestination) {
+      let returnedPosts;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            // const errorMessages = await response.text();
+            // alert(errorMessages);
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Posts fetched successfully:', data);
+          returnedPosts = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching posts:', error);
+        });
+      return returnedPosts;
+    },
   }
 }
 </script>

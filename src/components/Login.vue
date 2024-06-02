@@ -12,14 +12,14 @@
       <div class="text-fields">
         <v-card class="register-form" title="Login" variant="outline">
           <v-container>
-            <v-text-field
+            <v-text-field @keyup.enter="login"
               v-model="phoneNumber"
               color="#9A1220"
               label="Phone Number"
               variant="underlined"
             ></v-text-field>
 
-            <v-text-field
+            <v-text-field @keyup.enter="login"
               v-model="password"
               color="#9A1220"
               label="Password"
