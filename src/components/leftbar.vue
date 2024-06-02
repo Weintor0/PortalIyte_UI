@@ -29,15 +29,17 @@ const newtopics = ref<{ id: string, title: string }[]>([])
 
 const handleTopicClick = (topic: { id: string, title: string }) => {
   if (topic.id) {
-    router.push(`/topic-page/${topic.id}`)
+    router.push(`/topic-page/${topic.id}`).then(() => {
+      router.go(0)})
   } else {
     console.error('Topic ID is undefined')
   }
+  
 }
 
 const fetchTopics = async () => {
   try {
-    const response = await fetch('https://portal-iyte-be.onrender.com/api/topic')
+    const response = await fetch('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/topic')
     const data = await response.json()
     console.log('All topics:', data)
     newtopics.value = data.map((topic: { id: string, name: string }) => ({

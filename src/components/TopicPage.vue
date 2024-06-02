@@ -44,12 +44,12 @@
 
     async created() {
       const topicId = this.$route.params.id; 
-      const topicResponse = await fetch(`https://portal-iyte-be.onrender.com/api/topic/${topicId}`);
+      const topicResponse = await fetch(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/topic/${topicId}`);
       const topicData = await topicResponse.json();
       this.topicName = topicData.name; 
 
       
-      const allPosts = await this.getPostsForTopic('https://portal-iyte-be.onrender.com/api/post/topic/${topicId}')
+      const allPosts = await this.getPostsForTopic(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/topic/${topicId}`)
       console.log('All posts:', allPosts)
       allPosts.forEach(post => {
         let image = ''
