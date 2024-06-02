@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto border" variant="flat">
-    <v-card-title style="cursor: pointer" @click="$emit('post-details')">{{ header }}</v-card-title>
+    <v-card-title style="cursor: pointer" @click="$emit('post-details', id)">{{ header }}</v-card-title>
     <img v-if="image" :src="image" alt="Post Image" style="max-width: 100%; height: auto;" />
     <v-card-text class="py-2">
       {{ text }}

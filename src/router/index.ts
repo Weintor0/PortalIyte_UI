@@ -39,9 +39,10 @@ const routes = [
     meta: { showTopBar: true, showSidebars: true }
   },
   {
-    path: '/postdetails',
+    path: '/postdetails/:id',
     name: 'PostDetails',
     component: PostDetails,
+    props: true,
     meta: { showTopBar: true, showSidebars: true }
   },
   {

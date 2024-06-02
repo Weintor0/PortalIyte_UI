@@ -4,8 +4,9 @@
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
-            @postDetails="$emit('post-details')"
+            @postDetails="$emit('post-details', post.id)"
             @otherProfile="navigateToOtherProfile"
+            :id="post.id"
             :header="post.header"
             :text="post.text"
             :postTopic="post.postTopic"
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import { id } from 'vuetify/locale';
 import Post from './Post.vue'
 
 export default {
@@ -51,7 +53,10 @@ export default {
     const allPosts = await this.getPostsForMainPage('https://portal-iyte-be.onrender.com/api/post')
     console.log('All posts:', allPosts)
     allPosts.forEach(post => {
-      let image = `data:image/jpeg;base64,${post.image}`
+      let image = ''
+      if(post.image){
+        image = `data:image/jpeg;base64,${post.image}`
+      }
       this.posts.push({
         id:post.postId,
         header: post.title,
