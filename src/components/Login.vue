@@ -91,6 +91,7 @@ export default {
   width: 100%;
   padding: 2em;
   box-shadow: none;
+  height: 100%;
 }
 
 .button {
