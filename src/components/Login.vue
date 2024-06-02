@@ -1,5 +1,5 @@
 <template>
-  <div class="register-container">
+  <div class="login-container">
     <div class="text-fields">
       <v-card class="register-form" max-width="25em" title="Login" variant="outline">
         <v-container>
@@ -55,34 +55,30 @@ export default {
           password: this.password
         })
       })
-        .then(async response => {
+        .then(async (response) => {
           if (!response.ok) {
-            const errorMessages = await response.text();
-            alert(errorMessages);
-            throw new Error(response.text());
+            const errorMessages = await response.text()
+            alert(errorMessages)
+            throw new Error(response.text())
           }
         })
-        .then(data => {
-          console.log('Login successful:', data);
-          this.$emit('succesfully-login', data);
+        .then((data) => {
+          console.log('Login successful:', data)
+          this.$emit('succesfully-login', data)
         })
-        .catch(error => {
-          console.error('An error occurred during login:', error);
-        });
+        .catch((error) => {
+          console.error('An error occurred during login:', error)
+        })
     }
   }
 }
 </script>
 
 <style scoped>
-.register-container {
+.login-container {
   height: 45vh;
   width: 25vw;
   margin: auto;
-  padding: 2em;
-  background-color: rgba(128, 128, 128, 0.1);
-  border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
 }
@@ -96,14 +92,14 @@ export default {
 
 .button {
   color: white;
-  background-color: #9A1220;
+  background-color: #9a1220;
   padding: 0.5em 1em;
   margin: 0.5em 0;
   border-radius: 5px;
 }
 
 .button:hover {
-  background-color: #7F0E1A;
+  background-color: #7f0e1a;
 }
 
 .v-text-field {
@@ -114,5 +110,4 @@ export default {
   font-size: 1.5vw;
   font-weight: bold;
 }
-
 </style>
