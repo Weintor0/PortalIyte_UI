@@ -53,7 +53,7 @@
         </v-container>
 
         <v-card-actions>
-          <v-btn @click="$emit('login-page')" class="button">
+          <v-btn @click="this.register" class="button">
             Complete Registration
             <v-icon icon="mdi-chevron-right" end></v-icon>
           </v-btn>
@@ -77,8 +77,54 @@ export default {
     email: null,
     password1: null,
     password2: null,
+    phone: null,
     terms: false
-  })
+  }),
+
+  methods:{
+    async register() {
+      if(!this.Username || !this.email || !this.password1 || !this.password2 || !this.phone) {
+        alert('Please fill all the fields');
+        return;
+      }
+      if(this.email.split('@')[1] !== 'iyte.edu.tr' && this.email.split('@')[1] !== 'std.iyte.edu.tr') {
+        alert('Please enter a valid IZTECH mail address');
+        return;
+      }
+      if(this.password1 !== this.password2) {
+        alert('Passwords do not match');
+        return;
+      }
+      if(!this.terms) {
+        alert('You must agree to the terms and conditions');
+        return;
+      }
+      await fetch('https://portal-iyte-be.onrender.com/api/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: this.Username,
+          phoneNumber: this.phone,
+          email: this.email,
+          password: this.password1,
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('An error occurred during registration');
+          }
+        })
+        .then(data => {
+          window.localStorage.setItem('userId', data.id);
+          this.$emit('login-page', data)
+        })
+        .catch(error => {
+          console.error('An error occurred during registration:', error);
+        });
+    }
+  },
 }
 </script>
 

@@ -10,10 +10,12 @@
         <v-list-item-title>{{ postTopic }}</v-list-item-title>
 
         <v-list-item-subtitle style="cursor: pointer" @click="$emit('other-profile')">{{ postOwner }}</v-list-item-subtitle>
-
+        
+        <img :src="image">
         <template v-slot:append>
           <div class="justify-self-end" style="margin-right: 5px">
             <v-icon class="me-1" icon="mdi-comment"></v-icon>
+            <span class="subheading me-2">{{ postCommentCount }}</span>
           </div>
           <div class="justify-self-end">
             <v-icon class="me-1" icon="mdi-heart"></v-icon>
@@ -26,8 +28,14 @@
 </template>
 
 <script>
+import { id } from 'vuetify/locale';
+
 export default {
   props: {
+    id: {
+      type: Number,
+      default: -1
+    },
     header: {
       type: String,
       default: 'Header'
@@ -47,6 +55,14 @@ export default {
     postLiked: {
       type: Number,
       default: 0
+    },
+    postCommentCount: {
+      type: Number,
+      default: 0
+    },
+    image: {
+      type: String,
+      default: ''
     }
   }
 }
