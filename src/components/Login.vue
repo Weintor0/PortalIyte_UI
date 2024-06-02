@@ -1,45 +1,57 @@
 <template>
-  <div class="login-container">
-    <div class="text-fields">
-      <v-card class="register-form" max-width="25em" title="Login" variant="outline">
-        <v-container>
-          <v-text-field
-            v-model="phoneNumber"
-            color="#9A1220"
-            label="Phone Number"
-            variant="underlined"
-          ></v-text-field>
+  <div>
+    <v-alert
+      v-if="visible"
+      type="error"
+      dismissible
+      @input="visible = false"
+      :text="this.errorMessage"
+    >
+    </v-alert>
+    <div class="login-container">
+      <div class="text-fields">
+        <v-card class="register-form" title="Login" variant="outline">
+          <v-container>
+            <v-text-field
+              v-model="phoneNumber"
+              color="#9A1220"
+              label="Phone Number"
+              variant="underlined"
+            ></v-text-field>
 
-          <v-text-field
-            v-model="password"
-            color="#9A1220"
-            label="Password"
-            placeholder="Enter your password"
-            type="password"
-            variant="underlined"
-          ></v-text-field>
-        </v-container>
+            <v-text-field
+              v-model="password"
+              color="#9A1220"
+              label="Password"
+              placeholder="Enter your password"
+              type="password"
+              variant="underlined"
+            ></v-text-field>
+          </v-container>
 
-        <v-card-actions>
-          <v-btn class="button" @click="this.login">
-            Login <v-icon icon="mdi-chevron-right" end></v-icon>
-          </v-btn>
-        </v-card-actions>
-        <v-card-actions>
-          <v-btn class="button" @click="$emit('register-page')">
-            Register <v-icon icon="mdi-chevron-right" end></v-icon>
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+          <v-card-actions>
+            <v-btn class="button" @click="this.login">
+              Login <v-icon icon="mdi-chevron-right" end></v-icon>
+            </v-btn>
+          </v-card-actions>
+          <v-card-actions>
+            <v-btn class="button" @click="$emit('register-page')">
+              Register <v-icon icon="mdi-chevron-right" end></v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { RouterLink } from 'vue-router'
+import VueCookies from 'vue-cookies'
 
 export default {
   data: () => ({
+    visible: false,
+    errorMessage: '',
     phoneNumber: null,
     password: null
   }),
@@ -57,13 +69,15 @@ export default {
       })
         .then(async (response) => {
           if (!response.ok) {
-            const errorMessages = await response.text()
-            alert(errorMessages)
+            this.errorMessage = await response.text()
+            this.visible = true
             throw new Error(response.text())
           }
+          return response.json()
         })
         .then((data) => {
           console.log('Login successful:', data)
+          VueCookies.set('user', data.id, '4w')
           this.$emit('succesfully-login', data)
         })
         .catch((error) => {
@@ -76,15 +90,13 @@ export default {
 
 <style scoped>
 .login-container {
-  height: 45vh;
-  width: 25vw;
+  max-width: 80%;
   margin: auto;
   display: flex;
   flex-direction: column;
 }
 
 .register-form {
-  width: 100%;
   padding: 2em;
   box-shadow: none;
   height: 100%;

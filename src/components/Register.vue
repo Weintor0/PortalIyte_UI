@@ -81,23 +81,26 @@ export default {
     terms: false
   }),
 
-  methods:{
+  methods: {
     async register() {
-      if(!this.Username || !this.email || !this.password1 || !this.password2 || !this.phone) {
-        alert('Please fill all the fields');
-        return;
+      if (!this.Username || !this.email || !this.password1 || !this.password2 || !this.phone) {
+        alert('Please fill all the fields')
+        return
       }
-      if(this.email.split('@')[1] !== 'iyte.edu.tr' && this.email.split('@')[1] !== 'std.iyte.edu.tr') {
-        alert('Please enter a valid IZTECH mail address');
-        return;
+      if (
+        this.email.split('@')[1] !== 'iyte.edu.tr' &&
+        this.email.split('@')[1] !== 'std.iyte.edu.tr'
+      ) {
+        alert('Please enter a valid IZTECH mail address')
+        return
       }
-      if(this.password1 !== this.password2) {
-        alert('Passwords do not match');
-        return;
+      if (this.password1 !== this.password2) {
+        alert('Passwords do not match')
+        return
       }
-      if(!this.terms) {
-        alert('You must agree to the terms and conditions');
-        return;
+      if (!this.terms) {
+        alert('You must agree to the terms and conditions')
+        return
       }
       await fetch('https://portal-iyte-be.onrender.com/api/user/register', {
         method: 'POST',
@@ -108,23 +111,22 @@ export default {
           username: this.Username,
           phoneNumber: this.phone,
           email: this.email,
-          password: this.password1,
+          password: this.password1
         })
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
-            throw new Error('An error occurred during registration');
+            throw new Error('An error occurred during registration')
           }
         })
-        .then(data => {
-          window.localStorage.setItem('userId', data.id);
+        .then((data) => {
           this.$emit('login-page', data)
         })
-        .catch(error => {
-          console.error('An error occurred during registration:', error);
-        });
+        .catch((error) => {
+          console.error('An error occurred during registration:', error)
+        })
     }
-  },
+  }
 }
 </script>
 
@@ -155,16 +157,15 @@ export default {
 
 .button {
   color: white;
-  background-color: #9A1220;
+  background-color: #9a1220;
   padding: 0.5em 1em;
   margin: 0.5em 0;
   border-radius: 5px;
 }
 
 .button:hover {
-  background-color: #7F0E1A;
+  background-color: #7f0e1a;
 }
-
 
 :deep(.v-card-title) {
   font-size: 1.5vw;

@@ -11,6 +11,7 @@ import AccountSettings from '../components/AccountSettings.vue'
 import OtherProfilePage from '../components/OtherProfilePage.vue'
 import TopicPage from '../components/TopicPage.vue'
 import Report from '../components/Report.vue'
+import VueCookies from 'vue-cookies'
 
 const routes = [
   {
@@ -89,10 +90,18 @@ const routes = [
   }
 ]
 
-
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const cookie = VueCookies.get('user')
+  if (!cookie && to.name !== 'Login' && to.name !== 'Register') {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
 })
 
 export default router
