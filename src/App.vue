@@ -14,7 +14,7 @@
           @registerPage="goRegisterPage()"
           @succesfullyLogin="goSuccessfullyLoginPage()"
           @loginPage="goLoginPage()"
-          @postDetails="goPostDetails()"
+          @postDetails="goPostDetails($event)"
         ></RouterView>
       </div>
 
@@ -48,8 +48,8 @@ function goRegisterPage() {
   router.push('/register')
 }
 
-function goPostDetails() {
-  router.push('/postdetails')
+function goPostDetails(id) {
+  router.push('/postdetails/' + id)
 }
 </script>
 

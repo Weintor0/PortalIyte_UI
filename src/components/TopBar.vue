@@ -3,7 +3,7 @@
     <div class="logo" style="display: flex; max-width: 15em; min-width: 5em">
       <v-img
         style="cursor: pointer"
-        @click="$router.push('/postcontainer')"
+        @click="handleLogoClick"
         src="/src/assets/logo.png"
       ></v-img>
     </div>
@@ -76,6 +76,11 @@ export default {
       const route = this.items[index].route
       this.$router.push(route)
     },
+    handleLogoClick() {
+      if (this.showSearchAndIcons) {
+        this.$router.push('/postcontainer');
+      }
+    },
     handleSearch() {
       this.$router.push('/search-page')
     }
@@ -96,6 +101,12 @@ export default {
 .buttons {
   margin-left: 3em;
   margin-right: 3em;
+}
+
+.search-bar{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .buttons {

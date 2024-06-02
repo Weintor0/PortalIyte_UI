@@ -4,13 +4,15 @@
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
-            @postDetails="$emit('post-details')"
+            @postDetails="$emit('post-details', post.id)"
             @otherProfile="navigateToOtherProfile"
+            :id="post.id"
             :header="post.header"
             :text="post.text"
             :postTopic="post.postTopic"
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
+            :image="post.image"
           />
         </v-col>
       </v-row>
@@ -19,6 +21,7 @@
 </template>
 
 <script>
+import { id } from 'vuetify/locale';
 import Post from './Post.vue'
 
 export default {
@@ -27,29 +30,72 @@ export default {
   },
   data() {
     return {
-      posts: [
-        {
-          header: 'Biri sürekli denk diyo',
-          text: 'bunu nasıl engelleriz',
-          postTopic: 'Gündem',
-          postOwner: 'kimsinsen',
-          postLiked: 45
-        },
-        {
-          header: 'beşiktaş',
-          text: 'gene şampiyon',
-          postTopic: 'spor',
-          postOwner: 'ENBÜYÜKKARTAL',
-          postLiked: 12372901731
-        }
-      ]
+      // posts: [
+      //   {
+      //     header: 'Biri sürekli denk diyo',
+      //     text: 'bunu nasıl engelleriz',
+      //     postTopic: 'Gündem',
+      //     postOwner: 'kimsinsen',
+      //     postLiked: 45
+      //   },
+      //   {
+      //     header: 'beşiktaş',
+      //     text: 'gene şampiyon',
+      //     postTopic: 'spor',
+      //     postOwner: 'ENBÜYÜKKARTAL',
+      //     postLiked: 12372901731
+      //   }
+      // ]
+      posts: []
     }
+  },
+  async created() {
+    const allPosts = await this.getPostsForMainPage('https://portal-iyte-be.onrender.com/api/post')
+    console.log('All posts:', allPosts)
+    allPosts.forEach(post => {
+      let image = ''
+      if(post.image){
+        image = `data:image/jpeg;base64,${post.image}`
+      }
+      this.posts.push({
+        id:post.postId,
+        header: post.title,
+        text: post.content,
+        postTopic: post.topic.name,
+        postOwner: post.user.username,
+        postLiked: post.likeCount,
+        image: image
+      })
+    })
   },
   methods: {
     navigateToOtherProfile() {
       this.$router.push('/other-profile')
-    }
-  }
+    },
+    async getPostsForMainPage(fetchDestination) {
+      let returnedPosts;
+      await fetch(fetchDestination, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+        .then(response => {
+          if (!response.ok) {
+            // const errorMessages = await response.text();
+            // alert(errorMessages);
+            throw new Error(response.text());
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Posts fetched successfully:', data);
+          returnedPosts = data;
+        })
+        .catch(error => {
+          console.error('An error occurred during fetching posts:', error);
+        });
+      return returnedPosts;
+    },
+  },
 }
 </script>
 

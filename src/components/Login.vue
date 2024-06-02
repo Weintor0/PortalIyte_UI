@@ -21,7 +21,7 @@
         </v-container>
 
         <v-card-actions>
-          <v-btn class="button" @click="login">
+          <v-btn class="button" @click="this.login">
             Login <v-icon icon="mdi-chevron-right" end></v-icon>
           </v-btn>
         </v-card-actions>
@@ -45,24 +45,30 @@ export default {
   }),
   methods: {
     async login() {
-      try {
-        const response = await axios.post('https://portal-iyte-be.onrender.com/api/user/login', {
-          params: {
-            phoneNumber: this.phoneNumber,
-            password: this.password
+      await fetch('https://portal-iyte-be.onrender.com/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          phoneNumber: this.phoneNumber,
+          password: this.password
+        })
+      })
+        .then(async response => {
+          if (!response.ok) {
+            const errorMessages = await response.text();
+            alert(errorMessages);
+            throw new Error(response.text());
           }
-        });
-        if (response.status === 200) {
-          console.log('Login successful:', response.data);
-          this.$emit('succesfully-login', response.data);
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          console.error('Login failed: Unauthorized');
-        } else {
+        })
+        .then(data => {
+          console.log('Login successful:', data);
+          this.$emit('succesfully-login', data);
+        })
+        .catch(error => {
           console.error('An error occurred during login:', error);
-        }
-      }
+        });
     }
   }
 }
@@ -85,6 +91,7 @@ export default {
   width: 100%;
   padding: 2em;
   box-shadow: none;
+  height: 100%;
 }
 
 .button {
