@@ -4,7 +4,7 @@
       <v-img src="/src/assets/iyte-logo-eng.png"></v-img>
     </div>
     <div class="text-fields">
-      <v-card class="register-form" max-width="25em" title="Register" variant="flat">
+      <v-card class="register-form" title="Register" variant="flat">
         <v-container>
           <v-text-field
             v-model="Username"
@@ -83,7 +83,7 @@ export default {
 </script>
 
 <style scoped>
-.register-container {
+/*.register-container {
   height: 65vh;
   width: 25vw;
   margin: auto;
@@ -93,12 +93,18 @@ export default {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-}
+}*/
 
 .register-form {
-  width: 100%;
+  height: 65vh;
+  width: 30vw;
+  margin: auto;
   padding: 2em;
-  box-shadow: none;
+  background-color: rgba(128, 128, 128, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
 }
 
 .button {
