@@ -57,7 +57,7 @@ export default {
   }),
   methods: {
     async login() {
-      await fetch('https://portal-iyte-be.onrender.com/api/user/login', {
+      await fetch('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

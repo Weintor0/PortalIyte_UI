@@ -131,7 +131,7 @@ export default {
     }
   },
   async mounted(){
-    const user = await this.getUserDetails('https://portal-iyte-be.onrender.com/api/user/' + VueCookies.get('user'));
+    const user = await this.getUserDetails('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/' + VueCookies.get('user'));
     this.username = user.username;
     this.followers = user.followerCount;
     this.following = user.followingCount;
@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     async initPosts(){
-      const posts = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/post/user/' + VueCookies.get('user'));
+      const posts = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/user/' + VueCookies.get('user'));
       posts.forEach(post => {
         this.posts.push({
           id: post.postId,
@@ -159,11 +159,11 @@ export default {
       })
     },
     async initComments(){
-      this.comments = await this.getCommentsOfUser('https://portal-iyte-be.onrender.com/api/user/comments/' + VueCookies.get('user'));
+      this.comments = await this.getCommentsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/comments/' + VueCookies.get('user'));
       console.log('Comments:', this.comments);
     },
     async initLikes(){
-      const likes = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/user/likedPosts/' + VueCookies.get('user'));
+      const likes = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/likedPosts/' + VueCookies.get('user'));
       likes.forEach(like => {
         this.likes.push({
           id: like.postId,
@@ -180,7 +180,7 @@ export default {
       })
     },
     async initSaved(){
-      const saved = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/user/savedPosts/' + VueCookies.get('user'));
+      const saved = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/savedPosts/' + VueCookies.get('user'));
       saved.forEach(save => {
         this.saved.push({
           id: save.postId,

@@ -109,7 +109,7 @@ export default {
         alert('You must agree to the terms and conditions')
         return
       }
-      await fetch('https://portal-iyte-be.onrender.com/api/user/register', {
+      await fetch('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
