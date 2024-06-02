@@ -54,6 +54,7 @@
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
             :postCommentCount="post.commentCount"
+            :image="post.image"
           />
         </v-col>
       </v-row>
@@ -67,7 +68,7 @@
   <div v-if="activeButton === 'likes'" class="post-container">
     <v-container>
       <v-row>
-        <v-col v-for="(post, index) in posts" :key="index" cols="12">
+        <v-col v-for="(post, index) in liked" :key="index" cols="12">
           <Post
             @postDetails="$emit('post-details')"
             :id="post.id"
@@ -79,6 +80,7 @@
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
             :postCommentCount="post.commentCount"
+            :image="post.image"
           />
         </v-col>
       </v-row>
@@ -87,7 +89,7 @@
   <div v-if="activeButton === 'saved'" class="post-container">
     <v-container>
       <v-row>
-        <v-col v-for="(post, index) in posts" :key="index" cols="12">
+        <v-col v-for="(post, index) in saved" :key="index" cols="12">
           <Post
             @postDetails="$emit('post-details')"
             :id="post.id"
@@ -99,6 +101,7 @@
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
             :postCommentCount="post.commentCount"
+            :image="post.image"
           />
         </v-col>
       </v-row>
@@ -144,6 +147,10 @@ export default {
     async initPosts(){
       const posts = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/user/' + VueCookies.get('user'));
       posts.forEach(post => {
+        let image = ''
+        if (post.image) {
+          image = `data:image/jpeg;base64,${post.image}`
+        }
         this.posts.push({
           id: post.postId,
           userId: post.user.userId,
@@ -154,7 +161,7 @@ export default {
           postOwner: post.user.username,
           postLiked: post.likeCount,
           postCommentCount: post.commentCount,
-          image: post.image
+          image: image
         });
       })
     },
@@ -165,6 +172,10 @@ export default {
     async initLikes(){
       const likes = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/likedPosts/' + VueCookies.get('user'));
       likes.forEach(like => {
+        let image = ''
+        if (post.image) {
+          image = `data:image/jpeg;base64,${post.image}`
+        }
         this.likes.push({
           id: like.postId,
           userId: like.user.userId,
@@ -175,13 +186,17 @@ export default {
           postOwner: like.user.username,
           postLiked: like.likeCount,
           postCommentCount: like.commentCount,
-          image: like.image
+          image: image
         });
       })
     },
     async initSaved(){
       const saved = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/savedPosts/' + VueCookies.get('user'));
       saved.forEach(save => {
+        let image = ''
+        if (post.image) {
+          image = `data:image/jpeg;base64,${post.image}`
+        }
         this.saved.push({
           id: save.postId,
           userId: save.user.userId,
@@ -192,7 +207,7 @@ export default {
           postOwner: save.user.username,
           postLiked: save.likeCount,
           postCommentCount: save.commentCount,
-          image: save.image
+          image: image
         });
       })
     },
