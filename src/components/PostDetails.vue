@@ -19,8 +19,6 @@ import Comment from './Comment.vue'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
-
 export default {
   components: {
     Post,
@@ -28,6 +26,7 @@ export default {
   },
   data(){
     return {
+      router: useRouter(),
       post: {
         header: 'header',
         text: 'text',
@@ -58,8 +57,8 @@ export default {
       ]
     }
   },
-  created(){
-    console.log(this.$router.value.params.id)
+  mounted(){
+    console.log(this.router.currentRoute.params.id)
   },
 }
 
