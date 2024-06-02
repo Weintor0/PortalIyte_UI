@@ -1,18 +1,20 @@
 <template>
     <div class="sidebar" v-if="showSidebars">
       <div class="top-post-of-week">
-        <div class="rightbar-header">New Posts</div>
-        <div class="new-posts-list">
+        <div class="rightbar-header">Hot Posts</div>
+        <div class="hot-posts-list">
           <ul>
-            <li v-for="post in newPosts" :key="post.id">{{ post.title }}</li>
-          </ul>
+            <li v-for="post in hotposts" :key="post.postId">
+              <button class="post-button" @click="handlePostClick(post)">{{ post.title }}</button>
+            </li>
+        </ul>
         </div>
       </div>
     </div>
   </template>
   
   <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   
   const props = withDefaults(defineProps<{
     showSidebars?: boolean
@@ -20,16 +22,26 @@
     showSidebars: false
   })
   
-  const newPosts = ref([
-    { id: 1, title: 'Post 1' },
-    { id: 2, title: 'Post 2' },
-    { id: 3, title: 'Post 3' }, 
-    { id: 4, title: 'Post 4' }, 
-    { id: 5, title: 'Post 5' }, 
-    { id: 6, title: 'Post 6' }, 
-    { id: 7, title: 'Post 7' }, 
-    { id: 8, title: 'Post 8' },  
-  ])
+  const hotposts = ref<{ postId: string, title: string }[]>([])
+
+  const handlePostClick = (post: { postId: string, title: string }) => {
+    
+  }
+
+  const fetchHot = async () => {
+    try {
+      const response = await fetch('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/mostLiked')
+      const data = await response.json()
+      console.log('All hots:', data)
+      hotposts.value = data.map((post: { postId: string, title: string }) => ({
+        id: post.postId,
+        title: post.title
+      }))
+    } catch (error) {
+      console.error('Failed to fetch posts:', error)
+    }
+  }
+  onMounted(fetchHot)
   </script>
   
   <style scoped>
