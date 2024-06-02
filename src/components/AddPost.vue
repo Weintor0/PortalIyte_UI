@@ -1,22 +1,29 @@
 <template>
+  <v-alert
+    v-if="visible"
+    type="error"
+    dismissible
+    @input="visible = false"
+    :text="this.errorMessage"
+  ></v-alert>
   <div class="add-header">Create Post</div>
   <form @submit.prevent="submitPost">
     <div>
       <label for="topic" class="input-header">Topic</label>
-      <v-select v-model="post.topic" color="#9A1220" variant="underlined"></v-select>
+      <v-select
+        v-model="chosenTopic"
+        :items="topics"
+        color="#9A1220"
+        variant="underlined"
+      ></v-select>
     </div>
     <div>
       <label for="title" class="input-header">Title</label>
-      <v-text-field v-model="post.title" color="#9A1220" variant="underlined"></v-text-field>
+      <v-text-field v-model="title" color="#9A1220" variant="underlined"></v-text-field>
     </div>
     <div>
       <label for="text" class="input-header">Text</label>
-      <v-textarea
-        class="textarea"
-        v-model="post.text"
-        color="#9A1220"
-        variant="underlined"
-      ></v-textarea>
+      <v-textarea class="textarea" v-model="text" color="#9A1220" variant="underlined"></v-textarea>
     </div>
     <div class="bottom-container">
       <!--
@@ -24,29 +31,80 @@
         <label>Add images</label>
         <v-icon class="add-icon" @click="addImage">mdi-plus-circle</v-icon>
       </div>-->
-      <v-btn class="button" type="submit">Post</v-btn>
+      <v-btn class="button" color="#9a1220" type="submit">Post</v-btn>
     </div>
   </form>
 </template>
 
 <script>
+import VueCookies from 'vue-cookies'
 export default {
   data() {
     return {
-      post: {
-        topic: '',
-        title: '',
-        text: ''
-      }
+      dictionary: {},
+      topics: [],
+      chosenTopic: null,
+      title: null,
+      text: null,
+      image: null,
+      errorMessage: null,
+      visible: false
     }
   },
   methods: {
-    addImage() {
-      console.log('Image added', this.post)
-    },
-    submitPost() {
-      console.log('Post submitted:', this.post)
+    addImage() {},
+    async submitPost() {
+      if (!this.chosenTopic || !this.title || !this.text) {
+        this.errorMessage = 'Please fill all the fields'
+        this.visible = true
+        return
+      }
+      await fetch('https://portal-iyte-be.onrender.com/api/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          topicId: this.dictionary[this.chosenTopic],
+          userId: VueCookies.get('user'),
+          title: this.title,
+          content: this.text,
+          image: this.image
+        })
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('An error occurred during registration')
+          }
+          this.visible = false
+          this.chosenTopic = null
+          this.title = null
+          this.text = null
+        })
+        .then((response) => {
+          this.$route.push('/postcontainer')
+        })
     }
+  },
+  async mounted() {
+    await fetch('https://portal-iyte-be.onrender.com/api/topic', {
+      method: 'GET'
+    })
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(response.text())
+        }
+        return response.json()
+      })
+      .then((data) => {
+        data.forEach((item) => {
+          this.topics.push(item.name)
+          this.dictionary[item.name] = item.id
+        })
+      })
+      .catch((error) => {
+        console.error('An error occurred during gettin topics:', error)
+      })
   }
 }
 </script>

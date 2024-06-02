@@ -14,6 +14,7 @@
       v-model="searchText"
       @click="handleSearch"
       @keyup.enter="handleEnter"
+      color="#9a1220"
     ></v-text-field>
     <div v-if="showSearchAndIcons" class="buttons">
       <v-icon class="icon" @click="handleAdd" style="cursor: pointer">mdi-plus-box</v-icon>
