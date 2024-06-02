@@ -19,13 +19,27 @@
       </div>
     </div>
   </div>
-  <div class="post-container">
-    <div class="topics">
-      <v-btn>Posts</v-btn>
-      <v-btn>Comments</v-btn>
-      <v-btn>Liked</v-btn>
-      <v-btn>Saves</v-btn>
+  <div class="search-button-container">
+    <div class="search-content">
+        <v-btn 
+            :class="{'search-button': true, 'active': activeButton === 'posts'}"
+            @click="setActiveButton('posts')"
+        >Posts</v-btn>
+        <v-btn 
+            :class="{'search-button': true, 'active': activeButton === 'topics'}"
+            @click="setActiveButton('topics')"
+        >Comments</v-btn>
+        <v-btn 
+            :class="{'search-button': true, 'active': activeButton === 'users'}"
+            @click="setActiveButton('users')"
+        >Likes</v-btn>
+        <v-btn 
+            :class="{'search-button': true, 'active': activeButton === 'saved'}"
+            @click="setActiveButton('saved')"
+        >Saved</v-btn>
     </div>
+  </div>
+  <div class="post-container">
     <v-container>
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
@@ -47,11 +61,13 @@
 import Post from './Post.vue'
 
 export default {
+  name: "SearchButtons",
   components: {
     Post
   },
   data() {
     return {
+      activeButton: null,
       isUser: false,
       posts: [
         {
@@ -74,6 +90,9 @@ export default {
   methods: {
     handleAccount() {
       this.$router.push('/account-settings');
+    },
+    setActiveButton(button) {
+        this.activeButton = button;
     }
   }
 }
@@ -124,14 +143,6 @@ export default {
   font-size: 0.5vw;
 }
 
-:deep(.v-btn__content) {
-  font-weight: 500;
-}
-
-:deep(.v-btn__content) {
-  color: black;
-}
-
 .user-stats{
   display: flex;
   align-items: center;
@@ -147,5 +158,43 @@ export default {
   font-size: 1.2vw;
   display: flex;
   justify-content: center;
+}
+
+.search-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.search-content {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+    gap: 20px; 
+}
+
+.search-button {
+    display: flex;
+    flex: 1;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px; 
+    font-size: 1vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}   
+
+.search-button:hover {
+    transform: scale(1.05); 
+}
+
+.search-button:active {
+    transform: scale(1); 
+}
+
+.active {
+    background-color: rgba(154, 18, 32, 0.8);
 }
 </style>

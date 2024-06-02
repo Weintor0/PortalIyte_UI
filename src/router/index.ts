@@ -12,6 +12,8 @@ import OtherProfilePage from '../components/OtherProfilePage.vue'
 import TopicPage from '../components/TopicPage.vue'
 import Report from '../components/Report.vue'
 import VueCookies from 'vue-cookies'
+import SearchPage from '../components/SearchPage.vue'
+import MessagePage from '../components/MessagePage.vue'
 
 const routes = [
   {
@@ -86,6 +88,18 @@ const routes = [
     path: '/report',
     name: 'Report',
     component: Report,
+    meta: { showTopBar: true, showSidebars: false }
+  },
+  {
+    path: '/search-page',
+    name: 'SearchPage',
+    component: SearchPage,
+    meta: { showTopBar: true, showSidebars: true }
+  },
+  {
+    path: '/message-page',
+    name: 'MessagePage',
+    component: MessagePage,
     meta: { showTopBar: true, showSidebars: false }
   }
 ]
