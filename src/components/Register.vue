@@ -88,7 +88,7 @@ export default {
   width: 25vw;
   margin: auto;
   padding: 2em;
-  background-color: white;
+  background-color: rgba(128, 128, 128, 0.1);
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   display: flex;

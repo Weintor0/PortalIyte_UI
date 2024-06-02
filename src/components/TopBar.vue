@@ -4,7 +4,7 @@
       <v-img
         style="cursor: pointer"
         @click="$router.push('/postcontainer')"
-        src="/src/assets/portaliyte-high-resolution-logo-transparent.png"
+        src="/src/assets/logo.png"
       ></v-img>
     </div>
     <v-text-field
@@ -20,7 +20,7 @@
     ></v-text-field>
     <div v-if="showSearchAndIcons" class="buttons">
       <v-icon class="icon" @click="handleAdd" style="cursor: pointer">mdi-plus-box</v-icon>
-      <v-icon class="icon">mdi-bell-outline</v-icon>
+      <!-- <v-icon class="icon">mdi-bell-outline</v-icon> -->
       <v-menu>
       <template v-slot:activator="{ props }">
         <v-icon class="icon" v-bind="props" style="cursor: pointer">mdi-account</v-icon>
@@ -110,26 +110,9 @@ export default {
   align-items: center;
 }
 
-.v-list-item{
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
 .menu-content {
   cursor: pointer;
-  display: flex;
-  align-items: center;
   font-size: 1vw;
-}
-
-.v-list-item-icon {
-  margin-right: 0.5em;
-}
-
-.v-list-item-content {
-  display: flex;
-  align-items: center;
 }
 
 .v-list-item-title {

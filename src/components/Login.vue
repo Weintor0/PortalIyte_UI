@@ -4,9 +4,9 @@
       <v-card class="register-form" max-width="25em" title="Login" variant="outline">
         <v-container>
           <v-text-field
-            v-model="email"
+            v-model="phoneNumber"
             color="#9A1220"
-            label="IZTECH Mail Address"
+            label="Phone Number"
             variant="underlined"
           ></v-text-field>
 
@@ -21,7 +21,7 @@
         </v-container>
 
         <v-card-actions>
-          <v-btn class="button" @click="$emit('succesfully-login')">
+          <v-btn class="button" @click="login">
             Login <v-icon icon="mdi-chevron-right" end></v-icon>
           </v-btn>
         </v-card-actions>
@@ -40,9 +40,31 @@ import { RouterLink } from 'vue-router'
 
 export default {
   data: () => ({
-    email: null,
+    phoneNumber: null,
     password: null
-  })
+  }),
+  methods: {
+    async login() {
+      try {
+        const response = await axios.post('https://portal-iyte-be.onrender.com/api/user/login', {
+          params: {
+            phoneNumber: this.phoneNumber,
+            password: this.password
+          }
+        });
+        if (response.status === 200) {
+          console.log('Login successful:', response.data);
+          this.$emit('succesfully-login', response.data);
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          console.error('Login failed: Unauthorized');
+        } else {
+          console.error('An error occurred during login:', error);
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -52,7 +74,7 @@ export default {
   width: 25vw;
   margin: auto;
   padding: 2em;
-  background-color: white;
+  background-color: rgba(128, 128, 128, 0.1);
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   display: flex;
