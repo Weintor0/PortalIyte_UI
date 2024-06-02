@@ -51,7 +51,7 @@ export default {
   },
   async mounted() {
     console.log("adasdsd")
-    const allPosts = await this.getPostsForMainPage('https://portal-iyte-be.onrender.com/api/post')
+    const allPosts = await this.getPostsForMainPage('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post')
     console.log('All posts:', allPosts)
     allPosts.forEach((post) => {
       let image = ''
