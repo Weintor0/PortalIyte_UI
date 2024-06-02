@@ -60,9 +60,49 @@
     </v-container>
   </div>
   <div v-if="activeButton === 'comments'" class="">
-    <div v-for="(comment, index) in comments" @click="handleCommentClick(comment.postId)">
+    <div v-for="(comment, index) in comments" @click="handleCommentClick(comment.post_id)">
       <Comment :key="index" :comment="comment"/>
     </div>
+  </div>
+  <div v-if="activeButton === 'likes'" class="post-container">
+    <v-container>
+      <v-row>
+        <v-col v-for="(post, index) in posts" :key="index" cols="12">
+          <Post
+            @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
+            :header="post.header"
+            :text="post.text"
+            :postTopic="post.postTopic"
+            :postOwner="post.postOwner"
+            :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+  <div v-if="activeButton === 'saved'" class="post-container">
+    <v-container>
+      <v-row>
+        <v-col v-for="(post, index) in posts" :key="index" cols="12">
+          <Post
+            @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
+            :header="post.header"
+            :text="post.text"
+            :postTopic="post.postTopic"
+            :postOwner="post.postOwner"
+            :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -90,13 +130,15 @@ export default {
       saved: [],
     }
   },
-  async created(){
+  async mounted(){
     const user = await this.getUserDetails('https://portal-iyte-be.onrender.com/api/user/' + VueCookies.get('user'));
     this.username = user.username;
     this.followers = user.followerCount;
     this.following = user.followingCount;
-    this.initPosts();
-    this.initComments();
+    await this.initPosts();
+    await this.initComments();
+    await this.initLikes();
+    await this.initSaved(); 
   },
   methods: {
     async initPosts(){
@@ -119,6 +161,40 @@ export default {
     async initComments(){
       this.comments = await this.getCommentsOfUser('https://portal-iyte-be.onrender.com/api/user/comments/' + VueCookies.get('user'));
       console.log('Comments:', this.comments);
+    },
+    async initLikes(){
+      const likes = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/user/likedPosts/' + VueCookies.get('user'));
+      likes.forEach(like => {
+        this.likes.push({
+          id: like.postId,
+          userId: like.user.userId,
+          topicId: like.topic.topicId,
+          header: like.title,
+          text: like.content,
+          postTopic: like.topic.name,
+          postOwner: like.user.username,
+          postLiked: like.likeCount,
+          postCommentCount: like.commentCount,
+          image: like.image
+        });
+      })
+    },
+    async initSaved(){
+      const saved = await this.getPostsOfUser('https://portal-iyte-be.onrender.com/api/user/savedPosts/' + VueCookies.get('user'));
+      saved.forEach(save => {
+        this.saved.push({
+          id: save.postId,
+          userId: save.user.userId,
+          topicId: save.topic.topicId,
+          header: save.title,
+          text: save.content,
+          postTopic: save.topic.name,
+          postOwner: save.user.username,
+          postLiked: save.likeCount,
+          postCommentCount: save.commentCount,
+          image: save.image
+        });
+      })
     },
     handleCommentClick(postId) {
       this.$router.push('/postdetails/' + postId);

@@ -52,7 +52,7 @@ const postId = ref(props.comment.post_id)
 const userId = ref(props.comment.user_id)
 const commentOwner = ref(props.comment.username)
 const commentText = ref(props.comment.content)
-const likes = ref(props.comment.likes)
+const likes = ref(props.comment.like_count)
 const commentReplies = ref(props.comment.replies || [])
 
 const showReplyInput = ref(false)
