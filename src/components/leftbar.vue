@@ -1,85 +1,93 @@
 <template>
-    <div class="sidebar" v-if="showSidebars">
-      <div class="new-topics">
-        <div class="leftbar-header">Topics</div>
-          <div class="new-topics-list">
-            <ul>
-              <button class="topic-button" v-for="topic in newtopics" :key="topic.id" @click="handleTopicClick(topic)">{{ topic.title }}</button>
-            </ul>
-          </div>
+  <div class="sidebar" v-if="showSidebars">
+    <div class="new-topics">
+      <div class="leftbar-header">Topics</div>
+      <div class="new-topics-list">
+        <ul>
+          <li v-for="topic in newtopics" :key="topic.id">
+            <button class="topic-button" @click="handleTopicClick(topic)">{{ topic.title }}</button>
+          </li>
+        </ul>
       </div>
     </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  </div>
+</template>
 
-  const router = useRouter()
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-  const props = withDefaults(defineProps<{
-    showSidebars?: boolean
-  }>(), {
-    showSidebars: false
-  })
+const router = useRouter()
 
-  
-  const newtopics = ref([
-    { id: 1, title: 'Topic 1' },
-    { id: 2, title: 'Topic 2' },
-    { id: 3, title: 'Topic 3' }, 
-    { id: 4, title: 'Topic 4' }, 
-    { id: 5, title: 'Topic 5' }, 
-    { id: 6, title: 'Topic 6' }, 
-    { id: 7, title: 'Topic 7' }, 
-    { id: 8, title: 'Topic 8' },  
-  ])
+const props = withDefaults(defineProps<{
+  showSidebars?: boolean
+}>(), {
+  showSidebars: false
+})
 
-  const handleTopicClick = (topic) => {
-    router.push('/topic-page')
-  }
-  
-  </script>
-  
-  <style scoped>
-  .sidebar {
-    height: 100%;
-    border-radius: 10px;
-    background-color: rgba(128, 128, 128, 0.2);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-  }
-  
-  .new-topics{
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .leftbar-header {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 1.2vw;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #9a1220;
-    font-weight: bold;
-  }
-  
-  ul {
-    display: flex;
-    font-size: 1vw;
-    list-style-type: none;
-    padding: 0;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+const newtopics = ref<{ id: string, title: string }[]>([])
 
-  .topic-button{
-    width: 100%;
-    text-align: left;
-    padding: 5px 0;
-    border-bottom: 1px solid #ddd;
+const handleTopicClick = (topic: { id: string, title: string }) => {
+  if (topic.id) {
+    router.push(`/topic-page/${topic.id}`)
+  } else {
+    console.error('Topic ID is undefined')
   }
-  
-  
-  </style>
-  
+}
+
+const fetchTopics = async () => {
+  try {
+    const response = await fetch('https://portal-iyte-be.onrender.com/api/topic')
+    const data = await response.json()
+    console.log('All topics:', data)
+    newtopics.value = data.map((topic: { id: string, name: string }) => ({
+      id: topic.id,
+      title: topic.name
+    }))
+  } catch (error) {
+    console.error('Failed to fetch topics:', error)
+  }
+}
+
+onMounted(fetchTopics)
+</script>
+
+<style scoped>
+.sidebar {
+  height: 100%;
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.new-topics {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.leftbar-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 1.2vw;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #9a1220;
+  font-weight: bold;
+}
+
+ul {
+  display: flex;
+  font-size: 1vw;
+  list-style-type: none;
+  padding: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.topic-button {
+  width: 100%;
+  text-align: left;
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}
+</style>
