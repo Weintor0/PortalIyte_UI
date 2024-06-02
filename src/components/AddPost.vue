@@ -3,8 +3,13 @@
       <div class="add-header">Create Post</div>
       <form @submit.prevent="submitPost">
         <div>
-          <label for="topic" class="input-header">Topic</label>
-          <input type="text" id="topic" v-model="post.topic" />
+          <label for="issue" class="input-header">Topic</label>
+          <select id="issue" v-model="post.topic">
+            <option value="spam">Spam</option>
+            <option value="harassment">Harassment</option>
+            <option value="misinformation">Misinformation</option>
+            <option value="other">Other</option>
+          </select>
         </div>
         <div>
           <label for="title" class="input-header">Title</label>
@@ -84,6 +89,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background: #fff; 
   }
   
   textarea {
@@ -126,6 +132,27 @@
 
   .add-icon{
     font-size: 2vw;
+  }
+
+  select {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1vw;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: #aaa;
+  }
+
+  select option {
+    padding: 10px;
   }
   </style>
   

@@ -16,6 +16,7 @@
       clearable
       hide-details="auto"
       v-model="searchText"
+      @click="handleSearch"
       @keyup.enter="handleEnter"
     ></v-text-field>
     <div v-if="showSearchAndIcons" class="buttons">
@@ -74,6 +75,9 @@ export default {
     handleItemClick(index: number) {
       const route = this.items[index].route
       this.$router.push(route)
+    },
+    handleSearch() {
+      this.$router.push('/search-page')
     }
   }
 }
