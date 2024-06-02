@@ -70,7 +70,7 @@ export default {
         postOwner: post.user.username,
         postLiked: post.likeCount,
         postCommentCount: post.commentCount,
-        image: post.image
+        image: image
       });
     })
   },
