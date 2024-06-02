@@ -3,21 +3,27 @@
   <form @submit.prevent="submitPost">
     <div>
       <label for="topic" class="input-header">Topic</label>
-      <input type="text" id="topic" v-model="post.topic" />
+      <v-select v-model="post.topic" color="#9A1220" variant="underlined"></v-select>
     </div>
     <div>
       <label for="title" class="input-header">Title</label>
-      <input type="text" id="title" v-model="post.title" />
+      <v-text-field v-model="post.title" color="#9A1220" variant="underlined"></v-text-field>
     </div>
     <div>
       <label for="text" class="input-header">Text</label>
-      <textarea id="text" v-model="post.text"></textarea>
+      <v-textarea
+        class="textarea"
+        v-model="post.text"
+        color="#9A1220"
+        variant="underlined"
+      ></v-textarea>
     </div>
     <div class="bottom-container">
+      <!--
       <div class="add-images">
         <label>Add images</label>
         <v-icon class="add-icon" @click="addImage">mdi-plus-circle</v-icon>
-      </div>
+      </div>-->
       <v-btn class="button" type="submit">Post</v-btn>
     </div>
   </form>
@@ -66,23 +72,10 @@ label {
   margin-bottom: 5px;
 }
 
-input[type='text'],
-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-textarea {
-  resize: vertical;
-  height: 100px;
-}
-
 .bottom-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
 }
 
@@ -91,9 +84,6 @@ textarea {
   display: flex;
   font-size: 1vw;
   flex-direction: column;
-}
-
-.add-images button {
   width: 30px;
   height: 30px;
   font-size: 20px;
