@@ -12,7 +12,6 @@
       clearable
       hide-details="auto"
       v-model="searchText"
-      @click="handleSearch"
       @keyup.enter="handleEnter"
       color="#9a1220"
     ></v-text-field>
@@ -46,6 +45,9 @@
 
 <script lang="ts">
 import VueCookies from 'vue-cookies'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 export default {
   data() {
@@ -68,7 +70,9 @@ export default {
     handleEnter() {
       const searchParam = this.searchText
       this.searchText = ''
-      this.$router.push({ name: 'Search', params: { query: searchParam } })
+      this.$router.push(`/search-page/${searchParam}`).then(() => {
+      location.reload()
+    })
     },
     handleAccount() {
       this.$router.push('/profilepage')
@@ -88,9 +92,6 @@ export default {
       if (this.showSearchAndIcons) {
         this.$router.push('/postcontainer')
       }
-    },
-    handleSearch() {
-      this.$router.push('/search-page')
     }
   }
 }

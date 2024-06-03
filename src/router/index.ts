@@ -92,7 +92,7 @@ const routes = [
     meta: { showTopBar: true, showSidebars: false }
   },
   {
-    path: '/search-page',
+    path: '/search-page/:query',
     name: 'SearchPage',
     component: SearchPage,
     meta: { showTopBar: true, showSidebars: true }
