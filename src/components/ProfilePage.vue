@@ -155,7 +155,11 @@ export default {
       posts.forEach(post => {
         let image = ''
         if (post.image) {
-          image = `data:image/jpeg;base64,${post.image}`
+          if(post.image.includes('data:image')){
+            image = post.image
+          }else{
+            image = `data:image/jpeg;base64,${post.image}`
+          }
         }
         this.posts.push({
           id: post.postId,
@@ -179,8 +183,12 @@ export default {
       const likes = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/likedPosts/' + VueCookies.get('user'));
       likes.forEach(like => {
         let image = ''
-        if (post.image) {
-          image = `data:image/jpeg;base64,${post.image}`
+        if (like.image) {
+          if(like.image.includes('data')){
+            image = like.image
+          }else{
+            image = `data:image/jpeg;base64,${like.image}`
+          }
         }
         this.likes.push({
           id: like.postId,
@@ -200,8 +208,12 @@ export default {
       const saved = await this.getPostsOfUser('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/user/savedPosts/' + VueCookies.get('user'));
       saved.forEach(save => {
         let image = ''
-        if (post.image) {
-          image = `data:image/jpeg;base64,${post.image}`
+        if (save.image) {
+          if(save.image.includes('data:image')){
+            image = save.image
+          }else{
+            image = `data:image/jpeg;base64,${save.image}`
+          }
         }
         this.saved.push({
           id: save.postId,

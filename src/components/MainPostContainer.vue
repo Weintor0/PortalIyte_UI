@@ -59,7 +59,11 @@ export default {
     allPosts.forEach((post) => {
       let image = ''
       if (post.image) {
-        image = `data:image/jpeg;base64,${post.image}`
+        if(post.image.includes('data')){
+          image = post.image
+        }else{
+          image = `data:image/jpeg;base64,${post.image}`
+        }
       }
       this.posts.push({
         id: post.postId,

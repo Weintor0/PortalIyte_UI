@@ -17,7 +17,7 @@
             <v-icon class="me-1" icon="mdi-comment"></v-icon>
             <span class="subheading me-2">{{ postCommentCount }}</span>
           </div>
-          <div class="justify-self-end" @click="$emit('comment')">
+          <div class="justify-self-end" @click="handleLike">
             <v-icon class="me-1" icon="mdi-heart"></v-icon>
             <span class="subheading me-2">{{ likeCount }}</span>
           </div>
@@ -93,7 +93,7 @@ export default {
           },
           body: JSON.stringify({
             postId: this.id,
-            userId: VueCookies.get('userId')
+            userId: VueCookies.get('user')
           })
         })
         this.likeCount--;
@@ -106,13 +106,16 @@ export default {
           },
           body: JSON.stringify({
             postId: this.id,
-            userId: VueCookies.get('userId')
+            userId: VueCookies.get('user')
           })
         })
         this.likeCount++;
         this.isLiked = true;
       }
     },
+    handleComment() {
+      this.$emit('post-details', this.id)
+    }
   }
 }
 </script>

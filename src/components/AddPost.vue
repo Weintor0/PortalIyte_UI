@@ -25,12 +25,11 @@
       <label for="text" class="input-header">Text</label>
       <v-textarea class="textarea" v-model="text" color="#9A1220" variant="underlined"></v-textarea>
     </div>
+    <div>
+      <label for="image" class="input-header">Add Image</label>
+      <input type="file" @change="onFileChange" />
+    </div>
     <div class="bottom-container">
-      <!--
-      <div class="add-images">
-        <label>Add images</label>
-        <v-icon class="add-icon" @click="addImage">mdi-plus-circle</v-icon>
-      </div>-->
       <v-btn class="button" color="#9a1220" type="submit">Post</v-btn>
     </div>
   </form>
@@ -38,6 +37,7 @@
 
 <script>
 import VueCookies from 'vue-cookies'
+
 export default {
   data() {
     return {
@@ -52,14 +52,23 @@ export default {
     }
   },
   methods: {
-    addImage() {},
+    onFileChange(event) {
+      const file = event.target.files[0]
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          this.image = e.target.result
+        }
+        reader.readAsDataURL(file)
+      }
+    },
     async submitPost() {
       if (!this.chosenTopic || !this.title || !this.text) {
         this.errorMessage = 'Please fill all the fields'
         this.visible = true
         return
       }
-      await fetch('https://portal-iyte-be.onrender.com/api/post', {
+      await fetch('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -80,14 +89,18 @@ export default {
           this.chosenTopic = null
           this.title = null
           this.text = null
+          this.image = null
         })
-        .then((response) => {
-          this.$route.push('/postcontainer')
+        .then(() => {
+          this.$router.push('/postcontainer')
+        })
+        .catch((error) => {
+          console.error('An error occurred during post submission:', error)
         })
     }
   },
   async mounted() {
-    await fetch('https://portal-iyte-be.onrender.com/api/topic', {
+    await fetch('https://portaliyte-jq7n5xwowq-uc.a.run.app/api/topic', {
       method: 'GET'
     })
       .then(async (response) => {
@@ -103,11 +116,12 @@ export default {
         })
       })
       .catch((error) => {
-        console.error('An error occurred during gettin topics:', error)
+        console.error('An error occurred during getting topics:', error)
       })
   }
 }
 </script>
+
 
 <style scoped>
 .add-header {
