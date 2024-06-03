@@ -20,7 +20,6 @@
       </div>
       <div class="buttons" v-if="!isUser">
         <v-btn :class="{'user-button': !isFollowing, 'toggleOn': isFollowing}" size="small" variant="outlined" color="#9a1220" @click="follow">Follow</v-btn>
-        <v-btn class="user-button" size="small" variant="outlined" color="#9a1220" @click="message">Message</v-btn>
         <v-btn class="user-button" size="small" variant="outlined" color="#9a1220" @click="report">Report</v-btn>
       </div>
     </div>
