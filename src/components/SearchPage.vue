@@ -124,7 +124,7 @@ export default {
             this.router.push(`/topic-page/${topic.id}`)
         },
 
-        handleTopicClick(topic) {
+        handleTopicClick(user) {
             this.router.push(`/other-page/${user.id}`)
         },
 

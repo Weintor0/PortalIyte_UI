@@ -15,6 +15,9 @@
   
   <script setup lang="ts">
   import { ref, onMounted } from 'vue'
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
   
   const props = withDefaults(defineProps<{
     showSidebars?: boolean
@@ -25,7 +28,9 @@
   const hotposts = ref<{ postId: string, title: string }[]>([])
 
   const handlePostClick = (post: { postId: string, title: string }) => {
-    
+    router.push(`/postdetails/${post.postId}`).then(() => {
+    window.location.reload()
+  })
   }
 
   const fetchHot = async () => {
@@ -34,7 +39,7 @@
       const data = await response.json()
       console.log('All hots:', data)
       hotposts.value = data.map((post: { postId: string, title: string }) => ({
-        id: post.postId,
+        postId: post.postId,
         title: post.title
       }))
     } catch (error) {
