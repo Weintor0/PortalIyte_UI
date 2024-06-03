@@ -56,7 +56,6 @@ export default defineComponent({
       searchText: '',
       items: [
         { title: 'Profile Page', route: '/profilepage', icon: 'mdi-account-circle' },
-        { title: 'Settings', route: '/settings', icon: 'mdi-cog' },
         { title: 'Log out', route: '/', icon: 'mdi-logout' }
       ]
     }
