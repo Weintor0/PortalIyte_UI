@@ -34,7 +34,9 @@
     </v-list-item>
   </v-card>
   <v-list-item v-if="commentReplies.length">
-    <Comment v-for="(reply, index) in commentReplies" :key="index" :comment="reply" />
+    <div v-for="(reply, index) in commentReplies" @click="handleCommentClick(reply.postId)">
+      <Comment :key="index" :comment="reply" />
+    </div>
   </v-list-item>
 </template>
 
@@ -60,6 +62,10 @@ const newReplyText = ref('')
 
 const likeComment = () => {
   likes.value++
+}
+
+const handleCommentClick = (postId) => {
+  this.$router.push('/postdetails/' + postId);
 }
 
 const addReply = () => {

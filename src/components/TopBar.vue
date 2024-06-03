@@ -44,12 +44,13 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import VueCookies from 'vue-cookies'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-export default {
+export default defineComponent({
   data() {
     return {
       searchText: '',
@@ -94,7 +95,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 <style scoped>

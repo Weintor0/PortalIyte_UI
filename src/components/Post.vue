@@ -13,13 +13,13 @@
         <v-list-item-subtitle style="cursor: pointer" @click="$emit('other-profile')">{{ postOwner }}</v-list-item-subtitle>
         
         <template v-slot:append>
-          <div class="justify-self-end" style="margin-right: 5px">
+          <div class="justify-self-end" style="margin-right: 5px" @click="handleComment">
             <v-icon class="me-1" icon="mdi-comment"></v-icon>
             <span class="subheading me-2">{{ postCommentCount }}</span>
           </div>
-          <div class="justify-self-end">
+          <div class="justify-self-end" @click="$emit('comment')">
             <v-icon class="me-1" icon="mdi-heart"></v-icon>
-            <span class="subheading me-2">{{ postLiked }}</span>
+            <span class="subheading me-2">{{ likeCount }}</span>
           </div>
         </template>
       </v-list-item>
@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import { id } from 'vuetify/locale';
+import { id, th } from 'vuetify/locale';
+import VueCookies from 'vue-cookies'
 
 export default {
   props: {
@@ -72,6 +73,46 @@ export default {
       type: String,
       default: ''
     }
+  },
+  data() {
+    return {
+      likeCount: this.postLiked,
+      isLiked: false
+    }
+  },
+  methods: {
+    mounted(){
+      console.log("adasd",this.postLiked)
+    },
+    async handleLike() {
+      if (this.isLiked) {
+        await fetch(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/unlike`, {
+          method: 'PUT',
+          headers: {
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            postId: this.id,
+            userId: VueCookies.get('userId')
+          })
+        })
+        this.likeCount--;
+        this.isLiked = false;
+      } else {
+        await fetch(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/like`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            postId: this.id,
+            userId: VueCookies.get('userId')
+          })
+        })
+        this.likeCount++;
+        this.isLiked = true;
+      }
+    },
   }
 }
 </script>
