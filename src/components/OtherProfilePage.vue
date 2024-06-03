@@ -38,10 +38,6 @@
             :class="{'search-button': true, 'active': activeButton === 'likes'}"
             @click="setActiveButton('likes')"
         >Likes</v-btn>
-        <v-btn 
-            :class="{'search-button': true, 'active': activeButton === 'saved'}"
-            @click="setActiveButton('saved')"
-        >Saved</v-btn>
     </div>
   </div>
   <div v-if="activeButton === 'posts'" class="post-container">
@@ -49,7 +45,8 @@
       <v-row>
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
-            @postDetails="$emit('post-details')"
+            @postDetails="$emit('post-details', post.id)"
+            @otherProfile="navigateToOtherProfile()"
             :id="post.id"
             :userId="post.userId"
             :topicId="post.topicId"

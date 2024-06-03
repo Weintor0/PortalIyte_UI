@@ -1,7 +1,8 @@
 <template>
   <div class="user-info">
     <div class="username">
-      <v-icon class="account-icon" @click="handleAccount">mdi-account-circle</v-icon>
+      <img v-if="profilePicture" :src="profilePicture" width="128" height="128" @click="handleAccount"/>
+      <v-icon v-else class="account-icon" @click="handleAccount">mdi-account-circle</v-icon>
       {{ username }}
     </div>
     <div class="user-stats">
@@ -70,7 +71,8 @@
       <v-row>
         <v-col v-for="(post, index) in liked" :key="index" cols="12">
           <Post
-            @postDetails="$emit('post-details')"
+            @postDetails="$emit('post-details', post.id)"
+            @otherProfile="navigateToOtherProfile()"
             :id="post.id"
             :userId="post.userId"
             :topicId="post.topicId"
@@ -91,7 +93,8 @@
       <v-row>
         <v-col v-for="(post, index) in saved" :key="index" cols="12">
           <Post
-            @postDetails="$emit('post-details')"
+            @postDetails="$emit('post-details', post.id)"
+            @otherProfile="navigateToOtherProfile()"
             :id="post.id"
             :userId="post.userId"
             :topicId="post.topicId"
@@ -131,6 +134,7 @@ export default {
       comments: [],
       likes: [],
       saved: [],
+      profilePicture: '',
     }
   },
   async mounted(){
@@ -138,6 +142,8 @@ export default {
     this.username = user.username;
     this.followers = user.followerCount;
     this.following = user.followingCount;
+    const profilePicture = `data:image/jpeg;base64,${user.profilePicture}`;
+    this.profilePicture = user.profilePicture ? profilePicture : '';
     await this.initPosts();
     await this.initComments();
     await this.initLikes();
@@ -310,9 +316,11 @@ export default {
   font-size: 5vw;
 }
 
-.username{
+.username {
   font-size: 1vw;
   width: 40%;
+  display: flex;
+  align-items: center;
 }
 
 .user-info {
@@ -323,10 +331,12 @@ export default {
   font-size: 1.25rem;
   font-weight: 500;
   display: flex;
+  justify-content: space-between; /* This will help in spacing out the username and stats */
   background-color: rgba(128, 128, 128, 0.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 2px solid #9a1220;
 }
+
 
 .buttons {
   display: flex;
