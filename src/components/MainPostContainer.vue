@@ -5,7 +5,6 @@
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
             @postDetails="$emit('post-details', post.id)"
-            @otherProfile="navigateToOtherProfile()"
             :id="post.id"
             :userId="post.userId"
             :topicId="post.topicId"
@@ -80,9 +79,6 @@ export default {
     })
   },
   methods: {
-    navigateToOtherProfile() {
-      this.$router.push('/other-profile')
-    },
     async getPostsForMainPage(fetchDestination) {
       let returnedPosts
       await fetch(fetchDestination, {

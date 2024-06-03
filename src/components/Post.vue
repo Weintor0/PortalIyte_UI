@@ -10,7 +10,7 @@
       <v-list-item class="w-100">
         <v-list-item-title>{{ postTopic }}</v-list-item-title>
 
-        <v-list-item-subtitle style="cursor: pointer" @click="$emit('other-profile')">{{ postOwner }}</v-list-item-subtitle>
+        <v-list-item-subtitle style="cursor: pointer" @click="handleOtherProfile">{{ postOwner }}</v-list-item-subtitle>
         
         <template v-slot:append>
           <div class="justify-self-end" style="margin-right: 5px" @click="handleComment">
@@ -30,6 +30,7 @@
 <script>
 import { id, th } from 'vuetify/locale';
 import VueCookies from 'vue-cookies'
+import { useRouter } from 'vue-router'
 
 export default {
   props: {
@@ -77,7 +78,8 @@ export default {
   data() {
     return {
       likeCount: this.postLiked,
-      isLiked: false
+      isLiked: false,
+      router: useRouter()
     }
   },
   methods: {
@@ -115,6 +117,10 @@ export default {
     },
     handleComment() {
       this.$emit('post-details', this.id)
+    },
+    handleOtherProfile() {
+      console.log("adasd",this.userId)
+      this.router.push(`/other-profile/${this.userId}`)
     }
   }
 }
