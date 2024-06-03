@@ -70,7 +70,11 @@ export default {
     const post = await this.getPost(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/post/${this.router.currentRoute.params.id}`)
     let image = ''
     if (post.image) {
-      image = `data:image/jpeg;base64,${post.image}`
+      if(post.image.includes('data')){
+        image = post.image
+      }else{
+        image = `data:image/jpeg;base64,${post.image}`
+      }
     }
     this.post = {
       id: post.postId,
