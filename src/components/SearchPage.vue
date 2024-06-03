@@ -15,7 +15,7 @@
             >Users</v-btn>
         </div>
     </div>
-    <div class="post-container">
+    <div class="post-container" v-if=" activeButton === 'posts'">
         <v-container>
         <v-row>
             <v-col v-for="(post, index) in posts" :key="index" cols="12">
@@ -32,11 +32,28 @@
         </v-row>
         </v-container>
     </div>
+    <div class="topic-container" v-if=" activeButton === 'topics'">
+        <ul>
+          <li v-for="topic in topics" :key="topic.id">
+            <button class="topic-button" @click="handleTopicClick(topic)">{{ topic.title }}</button>
+          </li>
+        </ul>
+    </div>
+    <div class="user-container" v-if=" activeButton === 'users'">
+        <ul>
+          <li v-for="user in users" :key="user.id">
+            <button class="topic-button" @click="handleUserClick(user)">{{ user.title }}</button>
+          </li>
+        </ul>
+    </div>
+    
     
 </template>
 
 <script>
 import Post from './Post.vue'
+import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue'
 
 export default {
     name: "SearchButtons",
@@ -45,28 +62,134 @@ export default {
     },
     data() {
         return {
-            activeButton: null,
-            posts: [
-            {
-                header: 'Biri sürekli denk diyo',
-                text: 'bunu nasıl engelleriz',
-                postTopic: 'Gündem',
-                postOwner: 'kimsinsen',
-                postLiked: 45
-            },
-            {
-                header: 'beşiktaş',
-                text: 'gene şampiyon',
-                postTopic: 'spor',
-                postOwner: 'ENBÜYÜKKARTAL',
-                postLiked: 12372901731
-            }
-        ]
+            activeButton: "posts" ,
+            posts: [],
+            topics: [],
+            users: []
         }
     },
+
+    setup() {
+        const router = useRouter();
+        return { router };
+    },
+
+    async created() {
+      const query = this.$route.params.query;
+
+      const allPosts = await this.getPostsForTopic(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/search/post/${query}`)
+      console.log('search post:', allPosts)
+      allPosts.forEach(post => {
+        let image = ''
+        if(post.image){
+          image = `data:image/jpeg;base64,${post.image}`
+        }
+        this.posts.push({
+          id:post.postId,
+          header: post.title,
+          text: post.content,
+          postTopic: post.topic.name,
+          postOwner: post.user.username,
+          postLiked: post.likeCount,
+          image: image
+        })
+      })
+
+      const allTopics = await this.getTopics(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/search/topic/${query}`)
+      console.log('search topic: ', allTopics)
+      allTopics.forEach(topic => {
+        this.topics.push({
+            id: topic.id,
+            title: topic.name
+        })
+      })
+
+      const allUsers = await this.getUsers(`https://portaliyte-jq7n5xwowq-uc.a.run.app/api/search/user/${query}`)
+      console.log('search user: ', allUsers)
+      allUsers.forEach(user => {
+        this.users.push({
+            id: user.id,
+            title: user.username
+        })
+      })
+
+    },
+
     methods: {
         setActiveButton(button) {
             this.activeButton = button;
+        },
+
+        handleTopicClick(topic) {
+            this.router.push(`/topic-page/${topic.id}`)
+        },
+
+        handleTopicClick(topic) {
+            this.router.push(`/other-page/${user.id}`)
+        },
+
+        async getPostsForTopic(fetchDestination) {
+        let returnedPosts;
+        await fetch(fetchDestination, {
+            method: 'GET',
+            redirect: 'follow',
+        })
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(response.text());
+            }
+            return response.json();
+            })
+            .then(data => {
+            console.log('Posts fetched successfully:', data);
+            returnedPosts = data;
+            })
+            .catch(error => {
+            console.error('An error occurred during fetching posts:', error);
+            });
+        return returnedPosts;
+        },
+        async getTopics(fetchDestination) {
+        let returnedTopics;
+        await fetch(fetchDestination, {
+            method: 'GET',
+            redirect: 'follow',
+        })
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(response.text());
+            }
+            return response.json();
+            })
+            .then(data => {
+            console.log('Topics fetched successfully:', data);
+            returnedTopics = data;
+            })
+            .catch(error => {
+            console.error('An error occurred during fetching topics:', error);
+            });
+        return returnedTopics;
+        },
+        async getUsers(fetchDestination) {
+        let returnedUsers;
+        await fetch(fetchDestination, {
+            method: 'GET',
+            redirect: 'follow',
+        })
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(response.text());
+            }
+            return response.json();
+            })
+            .then(data => {
+            console.log('Topics fetched successfully:', data);
+            returnedUsers = data;
+            })
+            .catch(error => {
+            console.error('An error occurred during fetching topics:', error);
+            });
+        return returnedUsers;
         }
     }
 }
@@ -120,5 +243,21 @@ export default {
 
 :deep(.v-btn__content) {
   font-weight: 500;
+}
+
+ul {
+  display: flex;
+  font-size: 1vw;
+  list-style-type: none;
+  padding: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.topic-button {
+  width: 100%;
+  text-align: left;
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
 }
 </style>
