@@ -25,38 +25,90 @@
       </div>
     </div>
     <div class="search-button-container">
-      <div class="search-content">
-          <v-btn 
-              :class="{'search-button': true, 'active': activeButton === 'posts'}"
-              @click="setActiveButton('posts')"
-          >Posts</v-btn>
-          <v-btn 
-              :class="{'search-button': true, 'active': activeButton === 'topics'}"
-              @click="setActiveButton('topics')"
-          >Comments</v-btn>
-          <v-btn 
-              :class="{'search-button': true, 'active': activeButton === 'users'}"
-              @click="setActiveButton('users')"
-          >Likes</v-btn>
-      </div>
+    <div class="search-content">
+        <v-btn 
+            :class="{'search-button': true, 'active': activeButton === 'posts'}"
+            @click="setActiveButton('posts')"
+        >Posts</v-btn>
+        <v-btn 
+            :class="{'search-button': true, 'active': activeButton === 'comments'}"
+            @click="setActiveButton('comments')"
+        >Comments</v-btn>
+        <v-btn 
+            :class="{'search-button': true, 'active': activeButton === 'likes'}"
+            @click="setActiveButton('likes')"
+        >Likes</v-btn>
     </div>
-    <div class="post-container">
-      <v-container>
-        <v-row>
-          <v-col v-for="(post, index) in posts" :key="index" cols="12">
-            <Post
-              @postDetails="$emit('post-details')"
-              @otherProfile="navigateToOtherProfile"
-              :header="post.header"
-              :text="post.text"
-              :postTopic="post.postTopic"
-              :postOwner="post.postOwner"
-              :postLiked="post.postLiked"
-            />
-          </v-col>
-        </v-row>
-      </v-container>
+  </div>
+  <div v-if="activeButton === 'posts'" class="post-container">
+    <v-container>
+      <v-row>
+        <v-col v-for="(post, index) in posts" :key="index" cols="12">
+          <Post
+            @postDetails="$emit('post-details', post.id)"
+            @otherProfile="navigateToOtherProfile()"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
+            :header="post.header"
+            :text="post.text"
+            :postTopic="post.postTopic"
+            :postOwner="post.postOwner"
+            :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
+            :image="post.image"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+  <div v-if="activeButton === 'comments'" class="">
+    <div v-for="(comment, index) in comments" @click="handleCommentClick(comment.post_id)">
+      <Comment :key="index" :comment="comment"/>
     </div>
+  </div>
+  <div v-if="activeButton === 'likes'" class="post-container">
+    <v-container>
+      <v-row>
+        <v-col v-for="(post, index) in liked" :key="index" cols="12">
+          <Post
+            @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
+            :header="post.header"
+            :text="post.text"
+            :postTopic="post.postTopic"
+            :postOwner="post.postOwner"
+            :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
+            :image="post.image"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+  <div v-if="activeButton === 'saved'" class="post-container">
+    <v-container>
+      <v-row>
+        <v-col v-for="(post, index) in saved" :key="index" cols="12">
+          <Post
+            @postDetails="$emit('post-details')"
+            :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
+            :header="post.header"
+            :text="post.text"
+            :postTopic="post.postTopic"
+            :postOwner="post.postOwner"
+            :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
+            :image="post.image"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
   </template>
   
   <script>
@@ -65,7 +117,8 @@
   export default {
     name: "SearchButtons",
     components: {
-      Post
+      Post,
+      Comment
     },
     data() {
       return {
@@ -91,6 +144,9 @@
       }
     },
     methods: {
+      handleCommentClick(postId) {
+        this.$router.push('/postdetails/' + postId);
+      },
       navigateToOtherProfile() {
         this.$router.push('/other-profile')
       },

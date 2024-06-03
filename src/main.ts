@@ -21,12 +21,12 @@ const vuetify = createVuetify({
 
 import App from './App.vue'
 import router from './router'
-
+import type { Plugin } from '@vue/runtime-core'
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(vuetify)
-app.use(VueCookies)
+app.use(VueCookies as unknown as Plugin<[]>)
 
 app.mount('#app')

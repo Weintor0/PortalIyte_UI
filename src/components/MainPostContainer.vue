@@ -5,13 +5,16 @@
         <v-col v-for="(post, index) in posts" :key="index" cols="12">
           <Post
             @postDetails="$emit('post-details', post.id)"
-            @otherProfile="navigateToOtherProfile"
+            @otherProfile="navigateToOtherProfile()"
             :id="post.id"
+            :userId="post.userId"
+            :topicId="post.topicId"
             :header="post.header"
             :text="post.text"
             :postTopic="post.postTopic"
             :postOwner="post.postOwner"
             :postLiked="post.postLiked"
+            :postCommentCount="post.commentCount"
             :image="post.image"
           />
         </v-col>
@@ -60,13 +63,16 @@ export default {
       }
       this.posts.push({
         id: post.postId,
+        userId: post.user.userId,
+        topicId: post.topic.topicId,
         header: post.title,
         text: post.content,
         postTopic: post.topic.name,
         postOwner: post.user.username,
         postLiked: post.likeCount,
+        postCommentCount: post.commentCount,
         image: image
-      })
+      });
     })
   },
   methods: {
