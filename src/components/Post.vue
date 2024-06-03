@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto border" variant="flat">
-    <v-card-title style="cursor: pointer" @click="$emit('post-details', id)">{{ header }}</v-card-title>
+    <v-card-title class="post-header" style="cursor: pointer" @click="$emit('post-details', id)">{{ header }}</v-card-title>
     <img v-if="image" :src="image" alt="Post Image" style="max-width: 100%; height: auto;" />
     <v-card-text class="py-2">
       {{ text }}
@@ -133,5 +133,9 @@ export default {
 
 .border {
   border: 2px solid #9a1220 !important;
+}
+
+.post-header{
+  font-size: 1.5vw;
 }
 </style>
